@@ -17,33 +17,33 @@
 
         <div class="col-12 col-md-8 p-2">
     <div class="shadow-sm p-4">
-        <form id="contactForm" onsubmit="return contactFormValidation()">
+        <form id="contactForm" method="POST" onsubmit="return contactFormValidation()">
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <input type="text" id="contactName" placeholder="Your First Name*" class="form-control">
+                    <input type="text" id="contactName" name="FirstName" placeholder="Your First Name*" class="form-control">
                     <p id="contactNameError" class="text-danger small mt-1"></p>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" id="contactName2" placeholder="Your Last Name*" class="form-control">
+                    <input type="text" id="contactName2" name="LastName" placeholder="Your Last Name*" class="form-control">
                     <p id="contactName2Error" class="text-danger small mt-1"></p>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <input type="text" id="contactEmail" placeholder="Your Email*" class="form-control">
+                    <input type="text" id="contactEmail" name="Email" placeholder="Your Email*" class="form-control">
                     <p id="contactEmailError" class="text-danger small mt-1"></p>
                 </div>
                 <div class="col-md-6">
-                    <input type="text" id="contactPhone" placeholder="Your Phone*" class="form-control">
+                    <input type="text" id="contactPhone" name="Phone" placeholder="Your Phone*" class="form-control">
                     <p id="contactPhoneError" class="text-danger small mt-1"></p>
                 </div>
             </div>
             <div class="mb-3">
-                <textarea name="message" id="contactMessage" class="form-control" rows="7" placeholder="Your Message*"></textarea>
+                <textarea id="contactMessage" name="Message" class="form-control" rows="7" placeholder="Your Message*"></textarea>
                 <p id="contactMessageError" class="text-danger small mt-1"></p>
             </div>
             <div class="d-flex justify-content-end">
-                <input type="submit" value="Send Message" class="btn btn-primary mt-2">
+                <input type="submit" name="submit" value="Send Message" class="btn btn-primary mt-2">
             </div>
         </form>
     </div>
@@ -51,4 +51,25 @@
 
         </div>
     </div>
-<?php include('footer.php') ?>
+<?php include('footer.php');
+
+
+if(isset($_POST['submit']))
+{
+    $FirstName = $_POST['FirstName'];
+    $LastName = $_POST['LastName'];
+    $Email = $_POST['Email'];
+    $Phone = $_POST['Phone'];
+    $Message = $_POST['Message'];
+
+    $q = "INSERT INTO responses_tbl (First_Name, Last_Name, Email, Phone, Message) VALUES ('$FirstName','$LastName','$Email','$Phone','$Message')";
+
+    if (mysqli_query($con, $q)) {
+        echo "<script>alert('Message sent successfully!');location.href=location;</script>";
+    } else {
+        echo "<script>alert('Error: " . mysqli_error($con) . "');</script>";
+    }
+}
+
+
+?>
