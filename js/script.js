@@ -207,6 +207,20 @@ function validateRegistrationForm() {
         emailError.innerText = '';
     }
 
+    if (phone.value.trim() === '') {
+        phoneError.style.color = "red";
+        phoneError.innerText = 'Mobile number is required';
+        isValid = false;
+    } else 
+    if (!/^[6-9]\d{9}$/.test(phone.value)) {
+        phoneError.style.color = "red";
+        phoneError.innerText = 'Invalid mobile number format.';
+        isValid = false;
+    } 
+    else {
+        phoneError.innerText = '';
+    }
+
     if (password.value.trim() === '') {
         passwordError.style.color = "red";
         passwordError.innerText = 'Password is required';
