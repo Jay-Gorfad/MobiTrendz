@@ -1,20 +1,58 @@
-<?php include("sidebar.php") ?>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-                            <div>
-                                <h1>Order Management</h1>
-                                <ol class="breadcrumb mb-0">
-                                    <li class="breadcrumb-item"><a href="Index.php">Dashboard</a></li>
-                                    <li class="breadcrumb-item active">Order</li>
-                                </ol>
-                            </div>
-                            <a class="btn btn-primary" href="add-order.php">Add Order</a>
-                        </div>
+<?php include ("sidebar.php"); 
+
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$search_query = '';
+
+if (!empty($search)) {
+    $search_query = "WHERE Name LIKE '%$search%' 
+        OR oh.Order_Id LIKE '%$search%' 
+        OR oh.Order_Status LIKE '%$search%'";
+}
+
+$query = "
+    SELECT 
+        oh.Order_Id, 
+        Name, 
+        oh.Order_Date, 
+        SUM(od.Quantity) AS Total_Quantity, 
+        SUM(od.Quantity * od.Price) AS Total_Price, 
+        oh.Order_Status
+    FROM order_header_tbl oh
+    JOIN user_details_tbl u ON oh.User_Id = u.User_Id
+    JOIN order_details_tbl od ON oh.Order_Id = od.Order_Id
+    $search_query
+    GROUP BY oh.Order_Id, Name, oh.Order_Date, oh.Order_Status
+    ORDER BY oh.Order_Date DESC
+";
+
+$result = mysqli_query($con, $query);
+$total_records = mysqli_num_rows($result);
+
+$records_per_page = 10;
+$total_pages = ceil($total_records / $records_per_page);
+
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$start_from = ($page - 1) * $records_per_page;
+
+$query .= " LIMIT $start_from, $records_per_page";
+$result = mysqli_query($con, $query);
+?>
+
+<div id="layoutSidenav_content">
     <main>
+        <div class="container-fluid px-4">
+            <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+                <div>
+                    <h1>Order Management</h1>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Orders</li>
+                    </ol>
+                </div>
+                <a class="btn btn-primary text-nowrap" href="add-order.php">Add Order</a>
+            </div>
             <div class="card-body">
-                <table class="table border">
+                <table class="table border text-nowrap">
                     <thead class="table-light">
                         <tr>
                             <th>Order ID</th>
@@ -22,161 +60,79 @@
                             <th>Order Date</th>
                             <th>Quantity</th>
                             <th>Total Price</th>
-                            <th>Payment Mode</th>
                             <th>Order Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1021</td>
-                            <td>prince</td>
-                            <td>2024-06-15</td>
-                            <td>1</td>
-                            <td>₹1,20,000</td>
-                            <td>Case On Delivery</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="Pending" selected>Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="view_order.php?id=1001" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2125</td>
-                            <td>Smith</td>
-                            <td>2024-07-20</td>
-                            <td>2</td>
-                            <td>₹2,40,000</td>
-                            <td>Case On Delivery</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing" selected>Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="view_order.php?id=1002" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2425</td>
-                            <td>Johnson</td>
-                            <td>2024-08-1</td>
-                            <td>1</td>
-                            <td>₹1,50,000</td>
-                            <td>Bank</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped" selected>Shipped</option>
-                                    <option value="Delivered">Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="view_order.php?id=1003" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3023</td>
-                            <td>jay</td>
-                            <td>2024-06-1</td>
-                            <td>1</td>
-                            <td>₹1,20,000</td>
-                            <td>Cash on Delivery</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered" selected>Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="view_order.php?id=1004" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3045</td>
-                            <td>karan</td>
-                            <td>2024-07-7</td>
-                            <td>2</td>
-                            <td>₹2,40,000</td>
-                            <td>Cash on Delivery</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option value="Pending">Pending</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Shipped">Shipped</option>
-                                    <option value="Delivered" selected>Delivered</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                </select>
-                            </td>
-                            <td>
-                                <a href="view_order.php?id=1004" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                            </td>
-                        </tr>
+                        <?php
+                        if (mysqli_num_rows($result) > 0) 
+                        {
+                            while ($row = mysqli_fetch_assoc($result)) 
+                            {
+                                ?>
+                                <tr>
+                                <td><?php echo $row['Order_Id']; ?></td>
+                                <td><a href='user-profile.php?username=<?php echo $row["Name"]; ?>'><?php echo $row["Name"]; ?></a></td>
+                                <td><?php echo $row['Order_Date']; ?></td>
+                                <td><?php echo $row['Total_Quantity']; ?></td>
+                                <td>₹<?php echo number_format($row['Total_Price'], 2); ?></td>
+                                <td><?php echo $row['Order_Status']; ?></td>
+                                <td>
+                                    <div class='d-flex flex-nowrap'>
+                                        <a href='view-order.php?order_id=<?php echo $row["Order_Id"]; ?>' class='btn btn-info btn-sm me-1'>View</a>
+                                        <a href='update-order.php?order_id=<?php echo $row["Order_Id"]; ?>' class='btn btn-primary btn-sm me-1'>Edit</a>
+                                        <button class='btn btn-danger btn-sm' data-bs-toggle='modal' data-bs-target='#deleteModal<?php echo $row["Order_Id"]; ?>'>Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <div class="modal fade" id="deleteModal<?php echo $row["Order_Id"]; ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this order? This action cannot be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="delete-order.php?order_id=<?php echo $row["Order_Id"]; ?>" class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        } else {
+                            echo "<tr><td colspan='7' class='text-center'>No orders found.</td></tr>";
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
             <div class="d-flex justify-content-end">
-                <nav aria-label="Page navigation example">
+               <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
+                        
+                        <?php 
+                            if ($page > 1) {
+                                echo "<li class='page-item'><a class='page-link' href='?page=".($page - 1)."&search=" . $search . "''>Previous</a></li>";
+                            }
+                            for ($i = 1; $i <= $total_pages; $i++) {
+                                echo "<li class='page-item " . ($i == $page ? 'active' : '') . "'><a class='page-link' href='?page=" . $i . "&search=" . $search . "'>" . $i . "</a></li>";
+                            }
+                            if ($page < $total_pages) {
+                                echo "<li class='page-item'><a class='page-link' href='?page=".($page + 1)."&search=" . $search . "''>Next</a></li>";
+                            }
+                        ?>
                     </ul>
                 </nav>
-            </div>
+            </div> 
         </div>
     </main>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this order? This action cannot be undone.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="delete_order_handler.php" class="btn btn-danger">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php include("footer.php") ?>
+
+    
+<?php include("footer.php"); ?>
