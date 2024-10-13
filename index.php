@@ -14,7 +14,7 @@
             
         </div>
         <div class="row justify-content-start pt-3">
-            <?php display_products();?>
+            <?php display_products($con);?>
         </div>
         <!-- <div class="row mt-5">
             <div class="col-md-6 col-12 ps-2 pe-2">
@@ -41,27 +41,29 @@
 
         </div>
         <div class="row justify-content-start pt-3">
-            <?php display_products2();?>
+            <?php display_products2($con);?>
         </div>
     </section>
 <?php include('footer.php'); ?>
 
 <?php
-    function display_products() {
-        for($i=1;$i<=8;$i++) {
-            echo '
+    function display_products($con) {
+        $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name , product.Sale_Price , round((product.Sale_Price-product.Sale_Price*product.Discount/100),2) as 'Price' from product_details_tbl as product left join category_details_tbl as category on product.Category_Id = category.Category_Id";
+        $result = mysqli_query($con, $query);
+        while($product = mysqli_fetch_assoc($result)){
+        ?>
             <div class="col-lg-3 col-md-4 gap p-2 col-6">
                 <div class="card">
                     <a href="product-details.php?id=1">
                         <div class="product-image">
-                            <img class="img-thumbnail p-4" src="img/products/15Plus.jpg" alt="Card image cap">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </div>
                     </a>
                     <div class="card-body product-body px-3 ">
-                        <h6 class="card-title d-flex justify-content-center">Phone</h6>
+                        <h6 class="card-title d-flex justify-content-center"><?php echo $product['Product_Name'] ?></h6>
                         <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
-                                <span class="shop-price">₹1,20,000.00</span>
-                                <span class="striked-price">₹1,50,000.00</span>
+                                <span class="shop-price">₹<?php echo $product["Price"]; ?></span>
+                                <span class="striked-price">₹<?php echo $product["Sale_Price"]; ?></span>
                         </div>
                         <div class="rating-section mb-2 d-flex justify-content-center">
                             <div class="ratings text-nowrap">
@@ -74,29 +76,33 @@
                             <div class="review-count ps-1">(95)</div>
                         </div>
                         <div class="d-flex align-items-center justify-content-around ">
-                            <a class="order-link cart-btn flex-grow-1" href="cart.php">Add to cart</a>
+                            <a class="order-link cart-btn flex-grow-1" href="cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Add to cart</a>
                         </div>
                     </div>
                 </div>
             </div>
-            ';
+            <?php
         }
-    }
-    function display_products2() {
-        for($i=1;$i<=8;$i++) {
-            echo '
+    }?>
+
+    <?php
+    function display_products2($con) {
+        $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name , product.Sale_Price , round((product.Sale_Price-product.Sale_Price*product.Discount/100),2) as 'Price' from product_details_tbl as product left join category_details_tbl as category on product.Category_Id = category.Category_Id";
+        $result = mysqli_query($con, $query);
+        while($product = mysqli_fetch_assoc($result)){
+        ?>
             <div class="col-lg-3 col-md-4 gap p-2 col-6">
                 <div class="card">
                     <a href="product-details.php?id=1">
                         <div class="product-image">
-                            <img class="img-thumbnail p-4" src="img/products/15Plus.jpg" alt="Card image cap">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </div>
                     </a>
                     <div class="card-body product-body px-3 ">
-                        <h6 class="card-title d-flex justify-content-center">Phone</h6>
+                        <h6 class="card-title d-flex justify-content-center"><?php echo $product['Product_Name'] ?></h6>
                         <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
-                                <span class="shop-price">₹1,20,000.00</span>
-                                <span class="striked-price">₹1,50,000.00</span>
+                                <span class="shop-price">₹<?php echo $product["Price"]; ?></span>
+                                <span class="striked-price">₹<?php echo $product["Sale_Price"]; ?></span>
                         </div>
                         <div class="rating-section mb-2 d-flex justify-content-center">
                             <div class="ratings">
@@ -111,13 +117,12 @@
                         
                         
                         <div class="d-flex align-items-center">
-                            <a class=" order-link d-block cart-btn  flex-grow-1" href="cart.php"><i class="fa-solid fa-cart-shopping pe-2"></i>Add to cart</a>
+                            <a class=" order-link d-block cart-btn  flex-grow-1" href="cart.php?product_id=<?php echo $product["Product_Id"]; ?>"><i class="fa-solid fa-cart-shopping pe-2"></i>Add to cart</a>
                         </div>
                     </div>
                 </div>
             </div>
-            ';
+            <?php
         }
     }
-    
-?>
+    ?>

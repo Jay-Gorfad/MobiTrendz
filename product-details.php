@@ -1,20 +1,25 @@
 <?php include('header.php'); ?>
+<?php
+$query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name , product.Description, product.Display, product.Processor, product.RAM, product.Storage, product.Rear_Camera, product.front_Camera, product.Battery, product.Operating_System, product.Color, product.Sale_Price , round((product.Sale_Price-product.Sale_Price*product.Discount/100),2) as 'Price' from product_details_tbl as product left join category_details_tbl as category on product.Category_Id = category.Category_Id";
+        $result = mysqli_query($con, $query);
+        while($product = mysqli_fetch_assoc($result)) {
+            ?>
     <div class="container sitemap">
         <p>
             <a href="index.php" class="text-decoration-none dim link">Home /</a>
             <a href="shop.php" class="text-decoration-none dim link">Shop /</a>
-            OnePlus Phone
+            Product Details
         </p>
 
         <div class="row">
             <!-- Product Image -->
             <div class="col-md-5 col-sm-12">
-                <img src="img/products/phone.png" alt="Product image" class="img-thumbnail p-3 w-100 h-100">
+                <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Product image" class="img-thumbnail p-3 w-100 h-100">
             </div>
 
             <!-- Product Details -->
             <div class="col-md-7 col-sm-12 d-flex flex-column px-5 align-items-start">
-                <h4 class="product-title">OnePlus Phone</h4>
+                <h4 class="product-title"><?php echo $product['Product_Name'];?></h4>
                 
                 <!-- Rating and Review -->
                 <div class="rating-section-description">
@@ -32,13 +37,13 @@
                 
                 <!-- Product Description -->
                 <div class="product-description mt-3">
-                    The OnePlus Phone combines cutting-edge technology with sleek design. Featuring a stunning display, powerful processor, and an exceptional camera system, it provides a top-notch user experience. Perfect for those who demand high performance and style.
+                    <?php echo $product['Description']; ?>
                 </div>
 
                 <!-- Price -->
                 <div class="row align-items-center mt-3 w-100">
                     <div class="col-3">Price</div>
-                    <div class="col-9 price">₹40,000.00</div>
+                    <div class="col-9 price">₹<?php echo $product["Price"]; ?></div>
                 </div>
 
                 <!-- Quantity Selection -->
@@ -67,45 +72,47 @@
                     <tbody>
                         <tr>
                             <th>Display</th>
-                            <td>6.55 inches AMOLED, 1080 x 2400 pixels</td>
+                            <td><?php echo $product["Display"]; ?></td>
                         </tr>
                         <tr>
                             <th>Processor</th>
-                            <td>Qualcomm Snapdragon 888</td>
+                            <td><?php echo $product["Processor"]; ?></td>
                         </tr>
                         <tr>
                             <th>RAM</th>
-                            <td>8GB</td>
+                            <td><?php echo $product["RAM"]; ?></td>
                         </tr>
                         <tr>
                             <th>Storage</th>
-                            <td>128GB / 256GB</td>
+                            <td><?php echo $product["Storage"]; ?></td>
                         </tr>
                         <tr>
                             <th>Rear Camera</th>
-                            <td>48MP + 50MP + 2MP</td>
+                            <td><?php echo $product["Rear_Camera"]; ?></td>
                         </tr>
                         <tr>
                             <th>Front Camera</th>
-                            <td>16MP</td>
+                            <td><?php echo $product["Front_Camera"]; ?></td>
                         </tr>
                         <tr>
                             <th>Battery</th>
-                            <td>4500mAh, Fast charging 65W</td>
+                            <td><?php echo $product["Battery"]; ?></td>
                         </tr>
                         <tr>
                             <th>Operating System</th>
-                            <td>OxygenOS based on Android 11</td>
+                            <td><?php echo $product["Operating_System"]; ?></td>
                         </tr>
                         <tr>
                             <th>Color</th>
-                            <td>Black</td>
+                            <td><?php echo $product["Color"]; ?></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <?php } ?>
+    
     <div class="container my-5">
         <h4 class="mb-4 text-center fw-bold">Customer Reviews</h4>
         <div class="row d-flex">
@@ -121,6 +128,7 @@
             <?php display_products();?>
         </div>
     </div>
+        
 <?php include('footer.php'); 
 
 function display_products() {

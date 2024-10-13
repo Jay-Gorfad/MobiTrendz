@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+<?php
+$query = "Select Name from user_details_tbl where User_Id='$_SESSION[user_id]'";
+$result = mysqli_query($con, $query);
+if (mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_array($result);
+}
+if (isset($_SESSION['user_id'])) { ?>
 <body>
     <nav id="navibar" class="navbar navbar-expand-lg navbar-light sticky-top container-fluid bg-light">
         <div class="container">
@@ -37,16 +44,44 @@
                     </li>
                 </ul>
                 <form class="d-flex justify-content-end font-bold">
-                <div class="search d-flex justify-content-center align-items-center ">
-                    <input class="search-input" type="search" placeholder="Search for items..." size="25" >
-                    <button class="primary-btn me-3 search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
-                <div class="log-reg d-flex justify-content-center align-items-center">
-                    <a class="primary-btn me-2  checkout-link" href="register.php">Register</a>
-                    <a class="checkout-link  primary-btn" href="login.php">Login</a>
-                </div>
+                    <div class="search d-flex justify-content-center align-items-center">
+                        <input class="search-input" type="search" placeholder="Search for items..." size="25">
+                        <button class="primary-btn me-3 search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center justify-content-sm-between w-100">
+                        <li class="nav-item ms-lg-auto dropdown profile-menu">
+                            <i class="fa fa-user-circle"></i><a class="nav-link dropdown-toggle" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Jay Gorfad</a>
+                            <ul id="pro-drop" class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarLightDropdownMenuLink">
+                                <li><a class="dropdown-item" href="account.php">My Profile</a></li>
+                                <li><a class="dropdown-item" href="order-history.php">Your Orders</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Log out</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Wishlist Icon with Product Count -->
+                        <a href="wishlist.php" class="icon-link position-relative me-3">
+                            <i class="fa fa-heart fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3 <!-- Replace with dynamic count from database -->
+                            </span>
+                        </a>
+
+                        <!-- Cart Icon with Product Count -->
+                        <a href="cart.php" class="icon-link position-relative">
+                            <i class="fa fa-shopping-cart fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3 <!-- Replace with dynamic count from database -->
+                            </span>
+                        </a>
+                    </div>
                 </form>
 
             </div>
         </div>
     </nav>
+<?php } else {
+
+}
+?>
+    

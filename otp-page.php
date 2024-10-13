@@ -58,8 +58,8 @@ if (isset($_POST['verify'])) {
                 $phone = $_SESSION['user_data']['phone'];
                 $password = $_SESSION['user_data']['pwd'];
 
-                $sql = "INSERT INTO user_details_tbl (Name, Password, Email,Mobile_No) 
-                        VALUES ('$name','$password','$email','$phone')";
+                $sql = "INSERT INTO user_details_tbl (User_Id, User_Role_Id, Name, Password, Email, Mobile_No, Active_Status) 
+                        VALUES (User_Id, User_Role_Id, '$name','$password','$email','$phone', 'Active_Status')";
 
                 if (mysqli_query($con, $sql)) {
                     unset($_SESSION['otp']);
