@@ -64,6 +64,93 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Display</label>
+                                <input type="text" class="form-control" id="productDisplay" name="product_display">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Processor</label>
+                                <input type="text" class="form-control" id="productProcessor" name="product_processor">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">RAM</label>
+                                <input type="text" class="form-control" id="productRam" name="product_ram">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Storage</label>
+                                <input type="text" class="form-control" id="productStorage" name="product_storage">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Rear Camera</label>
+                                <input type="text" class="form-control" id="productRearCamera" name="product_rearcamera">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Front Camera</label>
+                                <input type="text" class="form-control" id="productFrontCamera" name="product_frontcamera">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Battery</label>
+                                <input type="text" class="form-control" id="productBattery" name="product_battery">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Operating System</label>
+                                <input type="text" class="form-control" id="productOperatingSystem" name="product_operatingsystem">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Color</label>
+                                <input type="text" class="form-control" id="productColor" name="product_color">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Operating System</label>
+                                <input type="text" class="form-control" id="productOperatingSystem" name="product_name">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div> -->
+                    </div>
+
                    
                     <div class="row">
                         <div class="col-md-12">
@@ -116,9 +203,18 @@ if (isset($_POST['add_product'])) {
     $product_category = $_POST['product_category'];
     $product_description = $_POST['product_description'];
     $product_image = uniqid() . $_FILES['product_image']['name']; // Unique image name
+    $product_display = $_POST['product_display'];
+    $product_processor = $_POST['product_processor'];
+    $product_ram = $_POST['product_ram'];
+    $product_storage = $_POST['product_storage'];
+    $product_rearcamera = $_POST['product_rearcamera'];
+    $product_frontcamera = $_POST['product_frontcamera'];
+    $product_battery = $_POST['product_battery'];
+    $product_operatingsystem = $_POST['product_operatingsystem'];
+    $product_color = $_POST['product_color'];
 
-    $query = "INSERT INTO `product_details_tbl` (`Product_Name`, `Description`, `Product_Image`, `Sale_Price`, `Cost_Price`, `Discount`, `Stock`, `Category_Id`) 
-              VALUES ('$product_name', '$product_description', '$product_image', '$sale_price', '$cost_price', '$product_discount', '$product_stock', '$product_category')";
+    $query = "INSERT INTO `product_details_tbl` (`Product_Name`, `Description`, `Product_Image`, `Sale_Price`, `Cost_Price`, `Discount`, `Stock`, `Display`, `Processor`, `RAM`, `Storage`, `Rear_Camera`, `Front_Camera`, `Battery`, `Operating_System`, `Color`, `Category_Id`) 
+              VALUES ('$product_name', '$product_description', '$product_image', '$sale_price', '$cost_price', '$product_discount', '$product_stock', '$product_display', '$product_processor', '$product_ram', '$product_storage', '$product_rearcamera', '$product_frontcamera', '$product_battery', '$product_operatingsystem', '$product_color', '$product_category')";
 
     if (mysqli_query($con, $query)) {
 

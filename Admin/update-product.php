@@ -74,6 +74,91 @@ $product = mysqli_fetch_assoc($result);
                     </div>
 
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Display</label>
+                                <input type="text" class="form-control" id="productDisplay" name="product_display" value="<?php echo $product["Display"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Processor</label>
+                                <input type="text" class="form-control" id="productProcessor" name="product_processor" value="<?php echo $product["Processor"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">RAM</label>
+                                <input type="text" class="form-control" id="productRam" name="product_ram" value="<?php echo $product["RAM"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Storage</label>
+                                <input type="text" class="form-control" id="productStorage" name="product_storage" value="<?php echo $product["Storage"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Rear Camera</label>
+                                <input type="text" class="form-control" id="productRearCamera" name="product_rearcamera" value="<?php echo $product["Rear_Camera"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Front Camera</label>
+                                <input type="text" class="form-control" id="productFrontCamera" name="product_frontcamera" value="<?php echo $product["Front_Camera"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Battery</label>
+                                <input type="text" class="form-control" id="productBattery" name="product_battery" value="<?php echo $product["Battery"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Operating System</label>
+                                <input type="text" class="form-control" id="productOperatingSystem" name="product_operatingsystem" value="<?php echo $product["Operating_System"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Color</label>
+                                <input type="text" class="form-control" id="productColor" name="product_color" value="<?php echo $product["Color"]; ?>">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="productName" class="form-label">Operating System</label>
+                                <input type="text" class="form-control" id="productOperatingSystem" name="product_name">
+                                <div id="productNameError" class="error-message"></div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="productDescription" class="form-label">Description</label>
@@ -121,6 +206,16 @@ if (isset($_POST['update_product'])) {
     $stock = $_POST['product_stock'];
     $category_id = $_POST['product_category'];
     $description = $_POST['product_description'];
+    $product_display = $_POST['product_display'];
+    $product_processor = $_POST['product_processor'];
+    $product_ram = $_POST['product_ram'];
+    $product_storage = $_POST['product_storage'];
+    $product_rearcamera = $_POST['product_rearcamera'];
+    $product_frontcamera = $_POST['product_frontcamera'];
+    $product_battery = $_POST['product_battery'];
+    $product_operatingsystem = $_POST['product_operatingsystem'];
+    $product_color = $_POST['product_color'];
+
 
     // Check if a new image is uploaded, else retain the old image
     $new_image = $_FILES['product_image']['name'];
@@ -136,7 +231,16 @@ if (isset($_POST['update_product'])) {
         Discount = '$discount', 
         Cost_Price = '$cost_price', 
         Sale_Price = '$sale_price', 
-        Stock = '$stock', 
+        Stock = '$stock',
+        Display = '$product_display',
+        Processor = '$product_processor',
+        RAM = '$product_ram',
+        Storage = '$product_storage',
+        Rear_Camera = '$product_rearcamera',
+        Front_Camera = '$product_frontcamera',
+        Battery = '$product_battery',
+        Operating_System = '$product_operatingsystem',
+        Color = '$product_color',
         Category_Id = '$category_id', 
         Description = '$description', 
         Product_Image = '$image' 

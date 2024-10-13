@@ -98,8 +98,8 @@
                             <td>OxygenOS based on Android 11</td>
                         </tr>
                         <tr>
-                            <th>Price</th>
-                            <td>₹40,000.00</td>
+                            <th>Color</th>
+                            <td>Black</td>
                         </tr>
                     </tbody>
                 </table>
