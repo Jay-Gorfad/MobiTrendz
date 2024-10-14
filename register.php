@@ -63,6 +63,20 @@ if(isset($_POST['regbtn']))
         'pwd' => $password
     ];
     
+
+    $email_check_query = "SELECT * FROM user_details_tbl WHERE Email = '$regemail' LIMIT 1";
+        $result = mysqli_query($con, $email_check_query);
+        $user = mysqli_fetch_assoc($result);
+
+        if ($user)
+        {
+            if ($user['Active_Status'] == 1) 
+            {
+                setcookie('success', 'Your account already exists.', time() + 5, "/");
+                header("Location:login.php");
+                exit();
+            }
+        }
     $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();

@@ -659,3 +659,41 @@ function validateForms() {
 
     return isValid;
 }
+
+
+function validateResetPasswordForm() {
+    var newPassword = document.getElementById('newPassword').value.trim();
+    var confirmPassword = document.getElementById('confirmPassword').value.trim();
+    
+    var newPasswordError = document.getElementById('newPasswordError');
+    var confirmPasswordError = document.getElementById('confirmPasswordError');
+    
+    var isValid = true;
+    
+    // Clear previous error messages
+    newPasswordError.textContent = '';
+    confirmPasswordError.textContent = '';
+    
+    // Check if new password field is empty
+    if (newPassword === '') {
+        newPasswordError.textContent = 'Please enter a new password.';
+        isValid = false;
+    } else if (newPassword.length < 8) {
+        newPasswordError.textContent = 'Password must be at least 8 characters long.';
+        isValid = false;
+    }
+    
+    // Check if confirm password field is empty
+    if (confirmPassword === '') {
+        confirmPasswordError.textContent = 'Please confirm your new password.';
+        isValid = false;
+    }
+    
+    // Check if new password and confirm password match
+    if (newPassword !== '' && confirmPassword !== '' && newPassword !== confirmPassword) {
+        confirmPasswordError.textContent = 'Passwords do not match.';
+        isValid = false;
+    }
+    
+    return isValid;
+}
