@@ -1,4 +1,4 @@
-<?php include('header.php'); ?>
+<?php include 'header.php'; ?>
     <div class="container">
         <div class="row p-3 g-3">
             <div class="col-md-6 mb-3">
@@ -10,7 +10,7 @@
                         <h2 class="mb-3 text-center">Enter OTP</h2>
                         <div class="mb-4 text-center">Enter the OTP we sent you in email</div>
                         <form action="verify-otp.php" id="otpForm" method="post" onsubmit="return validateOtpForm();">
-                            <input type="number" id="otp" class="w-100 mb-3" placeholder="OTP">
+                            <input type="number" name="otp" id="otp" class="w-100 mb-3" placeholder="OTP">
                             <p id="otpError" class="error  mb-2"></p>
                             <input type="submit" value="Verify" name="verify" class="btn-msg w-100">
                             <!-- <div class="mt-4 text-center">
