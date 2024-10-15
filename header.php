@@ -1,4 +1,6 @@
-<?php error_reporting(0);
+
+<?php include('DB/connection.php'); 
+error_reporting(0);
 $backtrace = debug_backtrace();
 $caller_file = basename($backtrace[0]['file']);
 
@@ -23,7 +25,7 @@ $title_array = array(
 $title = $title_array[$caller_file];
 ?>
 
-<?php include('DB/connection.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,10 +42,11 @@ $query = "Select Name from user_details_tbl where User_Id='$_SESSION[user_id]'";
 $result = mysqli_query($con, $query);
 if (mysqli_num_rows($result) == 1) {
     $row = mysqli_fetch_array($result);
+    $username = $row['Name'];
 }
 if (isset($_SESSION['user_id'])) { ?>
 <body>
-    <nav id="navibar" class="navbar navbar-expand-lg navbar-light sticky-top container-fluid bg-light">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light sticky-top container-fluid bg-light">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -75,7 +78,7 @@ if (isset($_SESSION['user_id'])) { ?>
 
                     <div class="d-flex justify-content-between align-items-center justify-content-sm-between w-100">
                         <li class="nav-item ms-lg-auto dropdown profile-menu">
-                            <i class="fa fa-user-circle"></i><a class="nav-link dropdown-toggle" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Jay Gorfad</a>
+                            <a class="nav-link dropdown-toggle" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $username;?></a>
                             <ul id="pro-drop" class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarLightDropdownMenuLink">
                                 <li><a class="dropdown-item" href="account.php">My Profile</a></li>
                                 <li><a class="dropdown-item" href="order-history.php">Your Orders</a></li>
@@ -105,7 +108,7 @@ if (isset($_SESSION['user_id'])) { ?>
         </div>
     </nav>
 <?php } else { ?>
-    <nav id="navibar" class="navbar navbar-expand-lg navbar-light sticky-top container-fluid bg-light">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light sticky-top container-fluid bg-light">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -129,11 +132,11 @@ if (isset($_SESSION['user_id'])) { ?>
                     <a class="nav-link  <?php echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
                 </li>
             </ul>
-            <form class="d-flex justify-content-end font-bold">
+            <!-- <form class="d-flex justify-content-end font-bold">
                 <div class="search d-flex justify-content-center align-items-center">
                     <input class="search-input" type="search" placeholder="Search for items..." size="25">
                     <button class="primary-btn me-3 search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>
+                </div> -->
 
                 <form class="d-flex flex-nowrap justify-content-end">
                             <input class="search-input" type="search" placeholder="Search for items..." size="25" id="SearchSection2">
@@ -150,7 +153,7 @@ if (isset($_SESSION['user_id'])) { ?>
 ?>
 
 <?php
-        if (isset($_COOKIE['success']) || isset($_COOKIE['error'])) {
+        /*if (isset($_COOKIE['success']) || isset($_COOKIE['error'])) {
             $message = isset($_COOKIE['success']) ? $_COOKIE['success'] : $_COOKIE['error'];
 
             echo '
@@ -172,7 +175,7 @@ if (isset($_SESSION['user_id'])) { ?>
         };
     </script>
 ';
-        }
+        }*/
 
         ?>
     

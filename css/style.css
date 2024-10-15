@@ -10,6 +10,7 @@
     --secondary: #f8d7da; 
     --discount: #00cc66; 
     --hover:#FDD330;
+    
 }
 *{
     margin: 0;
@@ -1066,4 +1067,20 @@ input[type="submit"], button {
     background-color: var(--form-bg);
     font-size:15px;
     font-weight: 300;
+}
+
+.header-btn{
+    background-color: white;
+    color:var(--primary);
+    border: 1px solid var(--primary);
+    transition:  color 0.15s,background-color 0.15s;
+    text-decoration: none;
+    padding:10px 20px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+.header-btn:hover{
+    border:1px solid var(--primary);
+    color:white;
+    background-color: var(--primary);
 }
