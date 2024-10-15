@@ -86,7 +86,7 @@
             <h4>Recent Orders</h4>
             <a href="orders.php" class="btn btn-secondary">See All Orders</a>
         </div>
-        <div class="card-body">
+        <!-- <div class="card-body">
         <table class="table border">
             <thead class="table-light">
                 <tr>
@@ -155,16 +155,16 @@
             </tbody>
         </table>
         </div>
-    </div>
+    </div> -->
 
     <!-- Recent Products Section -->
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between">
             <h4>Recent Products</h4>
-            <a href="products.php" class="btn btn-secondary">See All Orders</a>
+            <a href="products.php" class="btn btn-secondary">See All Products</a>
         </div>
         <div class="card-body">
-            <table class="table">
+            <!-- <table class="table">
                 <thead class="table-light">
                     <tr>
                         <th>Product</th>
@@ -194,7 +194,7 @@
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
         </div>
     </div>
 </div>
