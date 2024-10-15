@@ -22,6 +22,7 @@
                         </form>
                         <form id="resend">
                         <div class="mt-4 text-center">
+                        <div id="timer" class="text-danger"></div>
                             <button type="submit" name="resend_otp" id="resend_otp" class="otp ms-2">Resend OTP</button>
                         </div>
                     </form>

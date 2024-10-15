@@ -28,17 +28,17 @@
     </div>
 <?php include('footer.php'); 
 
-// if (isset($_POST['login'])) {
-//     $email = $_POST['LoginEmail'];
-//     $pwd = $_POST['LoginPassword'];
+if (isset($_POST['login'])) {
+    $email = $_POST['LoginEmail'];
+    $pwd = $_POST['LoginPassword'];
 
-//     $query = "Select * from user_details_tbl where Email='$email' and Password='$pwd'";
-//     $result = mysqli_query($con, $query);
-//     if (mysqli_num_rows($result) == 1) {
-//         $row = mysqli_fetch_array($result);
-//         $_SESSION['user_id'] = $row[0];
-//         echo "<script> location.replace('index.php');</script>";
-//     }
-// }
+    $query = "Select * from user_details_tbl where Email='$email' and Password='$pwd'";
+    $result = mysqli_query($con, $query);
+    if (mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_array($result);
+        $_SESSION['user_id'] = $row[0];
+        echo "<script> location.replace('index.php');</script>";
+    }
+}
 
 ?>
