@@ -7,7 +7,7 @@
                     <h1>Add New Order</h1>
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="order-management.php">Orders</a></li>
+                        <li class="breadcrumb-item"><a href="orders.php">Orders</a></li>
                         <li class="breadcrumb-item active">Add Order</li>
                     </ol>
                 </div>
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-secondary" id="addProductBtn">Add Another Product</button>
+                    <!-- <button type="button" class="btn btn-secondary" id="addProductBtn">Add Another Product</button> -->
 
                   <!-- Begin Billing Details Section -->
                   <!-- <div class="mb-4 mt-4">

@@ -1,4 +1,18 @@
 <?php include("sidebar.php"); ?>
+
+<?php
+    $query1 = "SELECT COUNT(*) as total_products FROM product_details_tbl";
+    $result1 = mysqli_query($con, $query1);
+    $product_row = mysqli_fetch_assoc($result1);
+
+    $query2 = "SELECT COUNT(*) as total_orders FROM order_header_tbl";
+    $result2 = mysqli_query($con, $query2);
+    $order_row = mysqli_fetch_assoc($result2);
+
+    $query3 = "SELECT COUNT(*) as total_users FROM user_details_tbl";
+    $result3 = mysqli_query($con, $query3);
+    $user_row = mysqli_fetch_assoc($result3);
+?>
 <!-- Amdmin Side Start --><div id="layoutSidenav_content">
 <div class="container-fluid px-4">
     <h1 class="mt-4">Admin Dashboard</h1>
@@ -14,7 +28,7 @@
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
                             <h5>Total Products</h5>
-                            <h2>1,200</h2>
+                            <h2><?php echo $product_row['total_products']; ?></h2>
                         </div>
                         <i class="fas fa-box fa-2x"></i>
                     </div>
@@ -28,7 +42,7 @@
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
                             <h5>Total Orders</h5>
-                            <h2>3,450</h2>
+                            <h2><?php echo $order_row['total_orders']; ?></h2>
                         </div>
                         <i class="fas fa-shopping-cart fa-2x"></i>
                     </div>
@@ -56,7 +70,7 @@
                     <div class="card-body d-flex justify-content-between align-items-center">
                         <div>
                             <h5>Total Users</h5>
-                            <h2>1,850</h2>
+                            <h2><?php echo $user_row['total_users']; ?></h2>
                         </div>
                         <i class="fas fa-users fa-2x"></i>
                     </div>
