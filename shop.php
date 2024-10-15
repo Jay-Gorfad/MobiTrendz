@@ -177,7 +177,7 @@
             ?>
             <div class="col-lg-3 col-md-4 gap p-2 col-sm-6 col-12">
                 <div class="card">
-                    <a href="product-details.php?id=1">
+                    <a href="product-details.php?id=<?php echo $product["Product_Id"]?>">
                         <div class="product-image">
                             <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </div>

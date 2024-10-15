@@ -1,9 +1,11 @@
-<?php include('header.php'); ?>
-<?php
-$query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name , product.Description, product.Display, product.Processor, product.RAM, product.Storage, product.Rear_Camera, product.front_Camera, product.Battery, product.Operating_System, product.Color, product.Sale_Price , round((product.Sale_Price-product.Sale_Price*product.Discount/100),2) as 'Price' from product_details_tbl as product left join category_details_tbl as category on product.Category_Id = category.Category_Id";
-        $result = mysqli_query($con, $query);
-        while($product = mysqli_fetch_assoc($result)) {
-            ?>
+<?php include('header.php'); 
+
+$query = "select product.Product_Id,product.Display, product.Processor,product.RAM, product.Storage, product.Rear_Camera, product.Front_Camera, product.Battery, product.Operating_System, product.Color, product.Product_Name, product.Product_Image, product.Description, product.Sale_Price, round(product.Sale_Price-(product.Sale_Price*product.Discount/100),2) 'Price', count(Rating) as 'Review_Count', round(avg(Rating)) as 'Rating' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id group by product.Product_Id having product.Product_Id=".$_GET['id'];
+$result = mysqli_query($con,$query);
+$product = mysqli_fetch_assoc($result);
+
+?>
+
     <div class="container sitemap">
         <p>
             <a href="index.php" class="text-decoration-none dim link">Home /</a>
@@ -111,7 +113,7 @@ $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, pr
             </div>
         </div>
     </div>
-    <?php } ?>
+    
     
     <div class="container my-5">
         <h4 class="mb-4 text-center fw-bold">Customer Reviews</h4>
