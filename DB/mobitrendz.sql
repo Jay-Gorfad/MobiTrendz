@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 13, 2024 at 03:08 PM
+-- Generation Time: Oct 15, 2024 at 05:25 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -20,6 +20,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `mobitrendz`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `about_page_details_tbl`
+--
+
+CREATE TABLE `about_page_details_tbl` (
+  `Content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `about_page_details_tbl`
+--
+
+INSERT INTO `about_page_details_tbl` (`Content`) VALUES
+('<p>About Page&nbsp;</p>');
 
 -- --------------------------------------------------------
 
@@ -49,7 +66,8 @@ INSERT INTO `address_details_tbl` (`Address_Id`, `User_Id`, `Full_Name`, `Addres
 (4, 4, 'Yagnik Desai', 'Kothariya Road', 'Rajkot', 'Gujarat', 360002, '7600242424'),
 (5, 4, 'Yagnik Desai', 'Kothariya Road', 'Rajkot', 'Gujarat', 360022, '6355531231'),
 (6, 4, 'Yagnik Desai', 'kjerhsd', 'Mumbai', 'fa', 360002, '7600242424'),
-(7, 4, 'Yagnik Desai', 'wertyu', 'asda', 'dsada', 360002, '7600242424');
+(7, 4, 'Yagnik Desai', 'wertyu', 'asda', 'dsada', 360002, '7600242424'),
+(8, 8, 'Jay Gorfad', 'Kothariya Road', 'Rajkot', 'Gujarat', 360002, '7600242424');
 
 -- --------------------------------------------------------
 
@@ -103,7 +121,54 @@ CREATE TABLE `category_details_tbl` (
 INSERT INTO `category_details_tbl` (`Category_Id`, `Category_Name`, `Parent_Category_Id`) VALUES
 (1, 'Apple', NULL),
 (2, 'Samsung', NULL),
-(3, 'Realme', NULL);
+(3, 'Realme', NULL),
+(5, 'Redmi', NULL),
+(6, 'Oppo', NULL),
+(7, 'Vivo', NULL),
+(8, 'OnePlus', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_page_details_tbl`
+--
+
+CREATE TABLE `contact_page_details_tbl` (
+  `Contact_Email` varchar(255) DEFAULT NULL,
+  `Contact_Number` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `contact_page_details_tbl`
+--
+
+INSERT INTO `contact_page_details_tbl` (`Contact_Email`, `Contact_Number`) VALUES
+('mobitrendz@gmail.com', '9137284650');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `offer_details_tbl`
+--
+
+CREATE TABLE `offer_details_tbl` (
+  `Offer_Id` int NOT NULL,
+  `Offer_Description` text,
+  `Discount` int DEFAULT NULL,
+  `Minimum_Order` decimal(7,2) DEFAULT NULL,
+  `offer_type` int DEFAULT '1',
+  `active_status` int DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `offer_details_tbl`
+--
+
+INSERT INTO `offer_details_tbl` (`Offer_Id`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`, `active_status`) VALUES
+(1, 'new offers', 10, 500.00, 1, 1),
+(3, 'Offers', 15, 999.00, 2, 1),
+(4, 'OFFERS', 19, 799.00, 3, 1),
+(5, 'new offers 2', 12, 299.00, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -124,8 +189,8 @@ CREATE TABLE `order_details_tbl` (
 
 INSERT INTO `order_details_tbl` (`Order_Id`, `Product_Id`, `Quantity`, `Price`) VALUES
 (1, 3, 2, 152100),
-(3, 7, 2, 62999.1),
-(2, 6, 5, 109999.12);
+(2, 6, 5, 109999.12),
+(6, 10, 10, 12599.1);
 
 -- --------------------------------------------------------
 
@@ -149,9 +214,8 @@ CREATE TABLE `order_header_tbl` (
 --
 
 INSERT INTO `order_header_tbl` (`Order_Id`, `User_Id`, `Order_Date`, `Order_Status`, `Shipping_Address_Id`, `Shipping_Charge`, `Total`, `Payment_Mode`) VALUES
-(1, 5, '2024-10-12 00:00:00', 'Processing', 3, 40, 304240, 'Cash on Delivery'),
 (2, 4, '2024-10-02 00:00:00', 'Shipped', 4, 50, 550045.6, 'Cash on Delivery'),
-(3, 4, '2024-10-01 00:00:00', 'Processing', 5, 40, 126038.2, 'Cash on Delivery');
+(6, 8, '2024-10-14 00:00:00', 'Processing', 8, 50, 126041, 'Cash on Delivery');
 
 -- --------------------------------------------------------
 
@@ -186,11 +250,11 @@ CREATE TABLE `product_details_tbl` (
 --
 
 INSERT INTO `product_details_tbl` (`Product_Id`, `Category_Id`, `Product_Name`, `Description`, `Product_Image`, `Sale_Price`, `Cost_Price`, `Discount`, `stock`, `Display`, `Processor`, `RAM`, `Storage`, `Rear_Camera`, `Front_Camera`, `Battery`, `Operating_System`, `Color`, `is_active`) VALUES
-(3, 1, 'Iphone 15 Pro', '5G Technology.', '670a1a68dd482_15pro.jpg', 169000.00, 159000.00, 10, 30, '', '', '', '', '', '', '', '', '', 1),
-(4, 1, 'Iphone 11', '4G Technology.', '670a1b7b39143714Mg+6MoFL._SX679_.jpg', 69000.00, 59000.00, 16, 11, '', '', '', '', '', '', '', '', '', 0),
-(5, 1, 'Iphone 11', '4G Technology', '670a1f0fce855714Mg+6MoFL._SX679_.jpg', 69000.00, 59000.00, 19, 65, '', '', '', '', '', '', '', '', '', 1),
-(6, 2, 'Samsung Galaxy S23 Ultra', 'Experience the power of Galaxy AI with S23 Ultra to effortlessly perfect your photos with Photo Assist, communicate quickly outside your language with Live Translate, 200MP. Wow-worthy resolution, Fast Charging Support, Stereo Speakers, Always On Display, Wireless Charging, Built-In GPS.', '670b6b6e1f2d1samsungs23ultra.jpg', 124999.00, 111000.00, 12, 25, '‎AMOLED', 'Snapdragon 8Gen 2', '12GB', '256GB', '200MP + 12MP + 10MP', '12MP', '‎5000mah', 'Android', 'Cream', 1),
-(7, 1, 'Iphone 15 ', 'iOS is the world’s most personal and secure mobile operating system, packed with powerful features and designed to protect your privacy.', '670ba3dc98da615.jpg', 69999.00, 79999.00, 10, 49, 'XDR Display', 'A16 Bionic', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'IOS', 'Pink', 1);
+(6, 2, 'Samsung S23 Ultra', 'Experience the power of Galaxy AI with S23 Ultra to effortlessly perfect your photos with Photo Assist, communicate quickly outside your language with Live Translate, 200MP. Wow-worthy resolution, Fast Charging Support, Stereo Speakers, Always On Display, Wireless Charging, Built-In GPS.', '670b6b6e1f2d1samsungs23ultra.jpg', 111000.00, 124999.00, 12, 25, '‎AMOLED', 'Snapdragon 8Gen 2', '12GB', '256GB', '200MP + 12MP + 10MP', '12MP', '‎5000mah', 'Android', 'Cream', 1),
+(8, 1, 'Iphone 11', 'The iPhone 11 boasts a gorgeous all-screen Liquid Retina LCD that is water resistant up to 2 metres for up to 30 minutes.', '670e65a8b4286714Mg+6MoFL._SX679_.jpg', 49999.00, 59999.00, 10, 29, 'XDR Display', 'A13 Bionic', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'IOS', 'Yellow', 1),
+(10, 3, 'Realme NARZO 70x', '7.69 mm Ultra-slim ,188g Light Body, The ultra-thin and lightweight body, combined with a width of 7.97cm, allows for comfortable single-handed grip even during extended periods of use; IP54 Dust and Water Resistance;', '670e68eeadc81realmenarzo70x.jpg', 13999.00, 16999.00, 10, 64, '120Hz Ultra Smooth Display', 'MediaTek Dimensity 6100+ processor', '8GB', '128GB', '48MP + 12MP + 8MP', '12MP', '‎5000mah', 'Android', 'Blue', 1),
+(11, 6, 'OPPO A3X 5G', '16.94 cm (6.67\"Inch) HD+ LCD 120Hz Ultra Bright Display to greatly improve the smoothness of screen touches ,with Screen-to-body ratio of 89.9% for better viewing experience.', '670e6afb553d5oppoa3x.jpg', 16999.00, 17999.00, 18, 48, '120Hz Refresh Rate Display', ' MediaTek Dimensity 6300', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'Android', 'Black', 1),
+(12, 7, 'Vivo Y28s', '16.6624 cm (6.56\" inch) LCD Capacitive multi-touch display 90Hz refresh rate, 269 ppi & 840 nits, Side-mounted capacitive fingerprint sensor.', '670e6ce2dd31fvivoy28s.jpg', 14599.00, 17999.00, 13, 76, '6.56\" inch LCD Display', 'Dimensity 6300 5G processor', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'Android', 'Red', 1);
 
 -- --------------------------------------------------------
 
@@ -212,8 +276,8 @@ CREATE TABLE `responses_tbl` (
 --
 
 INSERT INTO `responses_tbl` (`Response_Id`, `First_Name`, `Last_Name`, `Email`, `Phone`, `Message`) VALUES
-(2, 'Jay', 'Gorfad', 'jaygorfad00@gmail.com', '7895641320', 'About Mobile Phone'),
-(7, 'Yagnik', 'Desai', 'ydesai000@gmail.com', '6353915155', 'Details About Upcoming Mobile Phones');
+(7, 'Yagnik', 'Desai', 'ydesai000@gmail.com', '6353915155', 'Details About Upcoming Mobile Phones'),
+(8, 'Jay', 'Gorfad', 'jaygorfad00@gmail.com', '7600242424', 'About Mobile Phone');
 
 -- --------------------------------------------------------
 
@@ -239,7 +303,9 @@ INSERT INTO `review_details_tbl` (`Review_Id`, `Reply_To`, `Product_Id`, `User_I
 (4, NULL, 3, 5, 5, 'Good Device', '2024-10-13 19:08:48'),
 (7, 4, NULL, 1, NULL, 'Good', '2024-10-13 19:12:00'),
 (8, NULL, 5, 4, 4, 'Nice Device', '2024-10-13 19:12:23'),
-(9, 8, NULL, 1, NULL, 'good', '2024-10-13 19:16:01');
+(9, 8, NULL, 1, NULL, 'good', '2024-10-13 19:16:01'),
+(10, NULL, 12, 4, 4, 'Good Product', '2024-10-15 18:56:51'),
+(11, 10, NULL, 1, NULL, 'Good', '2024-10-15 18:57:08');
 
 -- --------------------------------------------------------
 
@@ -263,9 +329,9 @@ CREATE TABLE `user_details_tbl` (
 
 INSERT INTO `user_details_tbl` (`User_Id`, `User_Role_Id`, `Name`, `Password`, `Email`, `Mobile_No`, `Active_Status`) VALUES
 (4, 0, 'Yagnik Desai', '12345678', 'ydesai000@rku.ac.in', '987456320', 1),
-(5, 0, 'Jay Gorfad', '12345678', 'jaygorfad00@gmail.com', '7600242424', 1),
 (6, 0, 'Bhautik Kacha', '12345678', 'bhautik@gmail.com', '9475681499', 0),
-(7, 0, 'Prince Bhatt', '12345678', 'p@gmail.com', '9999254569', -1);
+(7, 0, 'Prince Bhatt', '12345678', 'p@gmail.com', '9999254569', -1),
+(8, 0, 'Jay Gorfad', '12345678', 'jaygorfad00@gmail.com', '7600242424', 1);
 
 -- --------------------------------------------------------
 
@@ -299,6 +365,12 @@ ALTER TABLE `banner_details_tbl`
 --
 ALTER TABLE `category_details_tbl`
   ADD PRIMARY KEY (`Category_Id`);
+
+--
+-- Indexes for table `offer_details_tbl`
+--
+ALTER TABLE `offer_details_tbl`
+  ADD PRIMARY KEY (`Offer_Id`);
 
 --
 -- Indexes for table `order_header_tbl`
@@ -338,7 +410,7 @@ ALTER TABLE `user_details_tbl`
 -- AUTO_INCREMENT for table `address_details_tbl`
 --
 ALTER TABLE `address_details_tbl`
-  MODIFY `Address_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Address_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `banner_details_tbl`
@@ -350,37 +422,43 @@ ALTER TABLE `banner_details_tbl`
 -- AUTO_INCREMENT for table `category_details_tbl`
 --
 ALTER TABLE `category_details_tbl`
-  MODIFY `Category_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Category_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `offer_details_tbl`
+--
+ALTER TABLE `offer_details_tbl`
+  MODIFY `Offer_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `order_header_tbl`
 --
 ALTER TABLE `order_header_tbl`
-  MODIFY `Order_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Order_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_details_tbl`
 --
 ALTER TABLE `product_details_tbl`
-  MODIFY `Product_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Product_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `responses_tbl`
 --
 ALTER TABLE `responses_tbl`
-  MODIFY `Response_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Response_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `review_details_tbl`
 --
 ALTER TABLE `review_details_tbl`
-  MODIFY `Review_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Review_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user_details_tbl`
 --
 ALTER TABLE `user_details_tbl`
-  MODIFY `User_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `User_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
