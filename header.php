@@ -78,7 +78,7 @@ if (isset($_SESSION['user_id'])) { ?>
 
                     <div class="d-flex justify-content-between align-items-center justify-content-sm-between w-100">
                         <li class="nav-item ms-lg-auto dropdown profile-menu">
-                            <a class="nav-link dropdown-toggle" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $username;?></a>
+                        <i class="fa fa-user-circle"></i><a class="nav-link dropdown-toggle" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"><?php echo $username;?></a>
                             <ul id="pro-drop" class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarLightDropdownMenuLink">
                                 <li><a class="dropdown-item" href="account.php">My Profile</a></li>
                                 <li><a class="dropdown-item" href="order-history.php">Your Orders</a></li>

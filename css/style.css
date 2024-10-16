@@ -1084,3 +1084,20 @@ input[type="submit"], button {
     color:white;
     background-color: var(--primary);
 }
+
+.profile-menu{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile-menu>a{
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.profile-menu>i{
+    color: var(--primary);
+    font-size: 5vh;
+    
+}

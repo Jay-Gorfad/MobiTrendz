@@ -11,9 +11,16 @@
             if($active_status==1)
             {   
                 $_SESSION['user_id'] = $row['User_Id'];
-                $username = $row['Name']; 
-                setcookie('success', "Welcome, $username!", time() + 5, "/");
-                echo "<script> location.href='index.php';</script>";
+                if($row['User_Role_Id']==0)
+                {
+                    $username = $row['Name']; 
+                    setcookie('success', "Welcome, $username!", time() + 5, "/");
+                    echo "<script> location.href='index.php';</script>";
+                }
+                else
+                {
+                    echo "<script> location.href='Admin/index.php';</script>";
+                }
             }
             else 
             {
