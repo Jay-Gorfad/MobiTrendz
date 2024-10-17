@@ -1,4 +1,10 @@
-<?php $title="Contact";include('header.php'); ?>
+<?php $title="Contact";include('header.php'); 
+
+$query = "SELECT `Contact_Email`, `Contact_Number` FROM `contact_page_details_tbl`";
+    $result = mysqli_query($con, $query);
+    $contact = mysqli_fetch_assoc($result);
+
+?>
     <div class="container sitemap">
         <p><a href="index.php" class="text-decoration-none dim link">Home /</a> Contact</p>
     </div>
@@ -8,8 +14,8 @@
             <div class="shadow-sm p-4 rounded border">
                 <h3 class="mb-4">Contact Information</h3>
                 <p class="mb-3">We are available 24/7 to assist you. Reach out to us through the following methods:</p>
-                <p class="mb-2"><strong>Phone:</strong> +8801611112222</p>
-                <p class="mb-4"><strong>Email:</strong> customer@exclusive.com</p>
+                <p class="mb-2"><strong>Phone:</strong> +91 <?php echo $contact["Contact_Number"]; ?></p>
+                <p class="mb-4"><strong>Email:</strong> <?php  echo $contact["Contact_Email"]; ?></p>
                 <div class="line mb-3"></div>
                 <p class="mb-1">For any inquiries or support, please fill out the contact form and we will get back to you within 24 hours.</p>
             </div>
