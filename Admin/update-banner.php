@@ -1,7 +1,5 @@
 <?php include("sidebar.php"); 
 
-include '../DB/connection.php'; 
-
 if (isset($_GET['banner_id'])) {
     $banner_id = $_GET['banner_id'];
     $query = "SELECT * FROM banner_details_tbl WHERE Banner_Id = $banner_id";
@@ -21,7 +19,7 @@ if (isset($_GET['banner_id'])) {
 
         <div class="card mb-4">
             <div class="card-body">
-                <form id="updateBannerForm" method="POST" enctype="multipart/form-data" onsubmit="return validateAddBannerForm();">
+                <form id="updateBannerForm" method="POST" enctype="multipart/form-data" onsubmit="return validateUpdateBannerForm();">
                     <input type="hidden" name="banner_id" value="<?php echo $banner['Banner_Id']; ?>">
 
                     <div class="row">
@@ -86,7 +84,6 @@ if (isset($_POST['update_banner'])) {
 
     if (mysqli_query($con, $updateBannerQuery)) {
         echo '<script>
-                alert("Banner updated successfully.");
                 window.location.href = "banners.php";
               </script>';
     } else {

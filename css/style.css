@@ -197,7 +197,7 @@ input[type="number"] {
     justify-content: space-between;
     align-items: center;
     height: 70vh;
-    background-image: url('../img/banners/hero.png');
+    /* background-image: url('../img/banners/hero.png'); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

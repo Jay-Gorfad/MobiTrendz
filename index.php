@@ -1,13 +1,45 @@
-<?php $title="Home";
-include('header.php'); ?>
+<?php include('header.php');
 
-    <div class="hero">
-        <div class="content ms-5 ps-5">
-            <h1>Exclusive Offer!</h1>
-            <p>Get a 10% discount on the latest iPhone 14 series. Experience the innovation and style of the newest Apple technology.</p>
-            <a href="shop.php" class="cta-button order-link">Shop Now</a>
-        </div>
-    </div>
+$query = "SELECT `Banner_Image` FROM `banner_details_tbl` WHERE Active_Status=1 AND View_Order > 0 ORDER BY View_Order";
+$result = mysqli_query($con, $query);
+$total_banners = mysqli_num_rows($result);
+
+?>
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+    <?php 
+    for ($i = 0; $i < $total_banners; $i++) {
+        echo '<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'.$i.'" class="'.($i == 0 ? 'active' : '').'"></li>';
+    }
+    ?>
+  </ol>
+  <div class="carousel-inner">
+    <?php
+        $result = mysqli_query($con, $query);
+        $i = 0;
+        while ($banner = mysqli_fetch_assoc($result)) {
+            ?>
+            <div class="carousel-item <?php echo $i == 0 ? 'active' : ''; ?>">
+                <img class="d-block w-100" height="530" src="img/banners/<?php echo $banner['Banner_Image']; ?>" alt="Banner <?php echo $i + 1; ?>">
+                
+                <?php if ($i == 0) { ?>
+                    <div class="carousel-caption h-100 justify-content-center flex d-md-block">
+                        <div class="row align-items-center flex h-100">
+                            <div class="hero-content col-md-6 order-md-1 order-2 text-center text-md-start text-wrap justify-content-center text-black">
+                                
+                                <h1>MobiTrendz</h1>
+                                <p>Get a 10% discount on the latest iPhone 14 series. Experience the innovation and style of the newest Apple technology.</p>
+                                <a href="shop.php" class="cta-button btn btn-primary text-center align-self-sm-center align-self-md-start">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>   
+            </div>
+            <?php
+            $i++;
+        }
+    ?>
+  </div>
 
     <section class=" mt-5 container">
         <div class="d-flex justify-content-between featured-products">
