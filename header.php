@@ -23,6 +23,10 @@ $title_array = array(
     "product-details.php" => "Details"
 );
 $title = $title_array[$caller_file];
+
+$query = "select count(*) as cart_total from cart_details_tbl";
+$result = mysqli_query($con, $query);
+$carttotal = mysqli_fetch_assoc($result);
 ?>
 
 
@@ -98,7 +102,7 @@ if (isset($_SESSION['user_id'])) { ?>
                         <a href="cart.php" class="icon-link position-relative">
                             <i class="fa fa-shopping-cart fs-4"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                3 <!-- Replace with dynamic count from database -->
+                            <?php echo $carttotal['cart_total']; ?> <!-- Replace with dynamic count from database -->
                             </span>
                         </a>
                     </div>

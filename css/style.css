@@ -1101,3 +1101,16 @@ input[type="submit"], button {
     font-size: 5vh;
     
 }
+.update-btn, .delete-btn{
+    text-decoration: none;
+    cursor: pointer;
+}
+.update-btn:hover, .delete-btn:hover{
+    color:white;
+}
+.update-btn{
+    background-color: var(--primary );
+}
+.delete-btn{
+    background-color: var(--delete);
+}
