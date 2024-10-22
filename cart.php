@@ -62,7 +62,7 @@ $result = mysqli_query($con,$query);
 
         <div class="row mb-2">
             <div class="col-2">
-                <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" class="image-item d-inline-block">
+                <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" style="width: 50px; height: 50px; object-fit: cover;">
             </div>
             <div class="col-2">
                 <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>

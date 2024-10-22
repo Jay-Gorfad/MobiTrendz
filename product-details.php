@@ -1,6 +1,8 @@
 <?php include('header.php'); ?>
 
 <?php
+$user_id = $_SESSION['user_id'];
+$product_id = $_GET['product_id'];
 $query = "select product.Product_Id, product.Display, product.Processor,product.RAM, product.Storage, product.Rear_Camera, product.Front_Camera, product.Battery, product.Operating_System, product.Color, product.Product_Name, product.Product_Image, product.Description, product.Sale_Price, round(product.Sale_Price-(product.Sale_Price*product.Discount/100),2) 'Price', count(Rating) as 'Review_Count', round(avg(Rating)) as 'Rating' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id where product.Product_Id=".$_GET['product_id'];
 $result = mysqli_query($con,$query);
 $product = mysqli_fetch_assoc($result);
@@ -120,6 +122,17 @@ $product = mysqli_fetch_assoc($result);
     <div class="container my-5">
     <h4 class="mb-4 text-center fw-bold">Customer Reviews</h4>
         <div class="row">
+        <?php 
+                $query = "select count(*) from order_details_tbl as od
+                    left join order_header_tbl as oh ON od.Order_Id = oh.Order_Id 
+                    where Product_Id=$product_id and User_Id IS NOT NULL and User_Id=$user_id ";
+                $result = mysqli_query($con, $query);
+                $orderCount = mysqli_fetch_array($result);
+                $hasOrdered = $orderCount[0]>0 ? true : false;
+
+                if($hasOrdered)
+                {
+                    ?>
             <div class="col-6">
             <form method="post" onsubmit="return validateReviewForm();">
                 <div>
@@ -143,6 +156,17 @@ $product = mysqli_fetch_assoc($result);
                 <button type="submit" class="primary-btn" name="add_review_btn">Leave a review</button>
             </form>
             </div>
+            <?php
+                }
+                else
+                {
+                    ?>
+                    <div class="col-6 d-flex  justify-content-center">
+                        <h5>Please place an order before reviewing this mobile.</h5>
+                    </div>
+                    <?php
+                }
+            ?>
             <div class="col-6">
                 <div class="row">
                     <?php display_review($product,$con);?>
@@ -150,9 +174,13 @@ $product = mysqli_fetch_assoc($result);
             </div>
         </div>
 
-        <h4 class="mt-5 mb-4 text-center fw-bold">Similar Products</h4>
-        <div class="d-flex justify-content-start mt-3">
-            <?php display_products();?>
+        <section class=" mt-5 container">
+        <div class="d-flesectionfy-content-between featured-products">
+            <h4 class="text-center fw-bold">More Products</h4>
+            
+        </div>
+        <div class="row justify-content-start pt-3">
+            <?php display_products($con);?>
         </div>
     </div>
         
@@ -176,41 +204,48 @@ if(isset($_POST['add_review_btn']))
             echo "<script>alert(".mysqli_error($con).")</script>";
     }
 
-function display_products() {
-    for($i=1;$i<=4;$i++) {
-        echo '
-        <div class="col-md-3 gap col-sm-4 p-2 col-6">
-            <div class="card">
-                <a href="product-details.php?id=1">
-                    <div class="product-image">
-                        <img class="img-thumbnail p-4" src="img/products/15Plus.jpg" alt="Card image cap">
-                    </div>
-                </a>
-                <div class="card-body product-body px-3 ">
-                    <h6 class="card-title d-flex justify-content-center">Phone</h6>
-                    <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
-                            <span class="shop-price">₹1,20,000.00</span>
-                            <span class="striked-price">₹1,50,000.00</span>
-                    </div>
-                    <div class="rating-section mb-2 d-flex justify-content-center">
-                        <div class="ratings">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
+    function display_products($con) {
+        $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, product.Sale_Price, ROUND((product.Sale_Price - product.Sale_Price * product.Discount / 100), 2) AS 'Price',COALESCE(AVG(review.Rating), 0) AS 'Average_Rating', COUNT(review.Review_Id) AS 'Review_Count'
+        FROM product_details_tbl AS product
+        LEFT JOIN review_details_tbl AS review ON product.Product_Id = review.Product_Id
+        WHERE product.is_active = 1
+        GROUP BY product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, product.Sale_Price
+        ";
+        $result = mysqli_query($con, $query);
+        while($product = mysqli_fetch_assoc($result)){
+        ?>
+            <div class="col-lg-3 col-md-4 gap p-2 col-6">
+                <div class="card">
+                    <a href="product-details.php?product_id=<?php echo $product["Product_Id"]?>">
+                        <div class="product-image">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </div>
-                        <div class="review-count ps-1">(95)</div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-around ">
-                        <a class="order-link cart-btn flex-grow-1" href="cart.php">Add to cart</a>
+                    </a>
+                    <div class="card-body product-body px-3 ">
+                        <h6 class="card-title d-flex justify-content-center text-nowrap"><?php echo $product['Product_Name'] ?></h6>
+                        <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
+                                <span class="shop-price">₹<?php echo $product["Price"]; ?></span>
+                                <span class="striked-price">₹<?php echo $product["Sale_Price"]; ?></span>
+                        </div>
+                        <div class="rating-section mb-2 d-flex justify-content-center">
+                            <div class="ratings text-nowrap">
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=1?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=2?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=3?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=4?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=5?'checked':''; ?>"></span>
+                            </div>
+                            <div class="review-count ps-1">(<?php echo $product['Review_Count']; ?>)</div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-around ">
+                            <a class="order-link cart-btn flex-grow-1" href="cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Add to cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        ';
+            <?php
+        }
     }
-}
 
 function display_review($product,$con){
     $product_id =$product["Product_Id"];

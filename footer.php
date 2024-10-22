@@ -14,7 +14,7 @@
                 <li class="nav-item mb-2"><a href="shop.php" class="nav-link p-0 text-body-secondary">Shop</a></li>
                 <li class="nav-item mb-2"><a href="contact.php" class="nav-link p-0 text-body-secondary">Contact</a></li>
                 <li class="nav-item mb-2"><a href="order-details.php" class="nav-link p-0 text-body-secondary">Your Orders</a></li>
-                <li class="nav-item mb-2"><a href="cart.php" class="nav-link p-0 text-body-secondary">Cart</a></li>
+                <!-- <li class="nav-item mb-2"><a href="cart.php" class="nav-link p-0 text-body-secondary">Cart</a></li> -->
             </ul>
             </div>
 

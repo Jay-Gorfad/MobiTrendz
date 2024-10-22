@@ -697,3 +697,13 @@ function validateResetPasswordForm() {
     
     return isValid;
 }
+
+function validateSearch(){
+    var searchBar = document.getElementById('searchBar');
+    if(searchBar.value === '')
+    {
+        alert('Enter mobile name to search mobile');
+        return false;
+    }
+    return true;
+}

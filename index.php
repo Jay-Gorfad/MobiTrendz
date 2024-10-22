@@ -6,7 +6,7 @@ $total_banners = mysqli_num_rows($result);
 
 ?>
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-  <ol class="carousel-indicators">
+<ol class="carousel-indicators">
     <?php 
     for ($i = 0; $i < $total_banners; $i++) {
         echo '<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'.$i.'" class="'.($i == 0 ? 'active' : '').'"></li>';
@@ -38,11 +38,24 @@ $total_banners = mysqli_num_rows($result);
             $i++;
         }
     ?>
+
+<?php 
+  if ($total_banners >= 2) {
+      echo '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>';
+  }
+  ?>
   </div>
 
     <section class=" mt-5 container">
         <div class="d-flex justify-content-between featured-products">
-            <h4 >Featuerd products</h4>
+            <h4>Featuerd products</h4>
             
         </div>
         <div class="row justify-content-start pt-3">

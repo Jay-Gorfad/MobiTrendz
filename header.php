@@ -24,9 +24,12 @@ $title_array = array(
 );
 $title = $title_array[$caller_file];
 
-$query = "select count(*) as cart_total from cart_details_tbl";
+if (isset($_SESSION['user_id'])) 
+{ 
+$query = "select count(*) as cart_total from cart_details_tbl where User_Id = " . $_SESSION['user_id'];
 $result = mysqli_query($con, $query);
 $carttotal = mysqli_fetch_assoc($result);
+}
 ?>
 
 
@@ -74,9 +77,10 @@ if (isset($_SESSION['user_id'])) { ?>
                         <a class="nav-link  <?php echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
                     </li> -->
                 </ul>
-                <form class="d-flex justify-content-end font-bold">
+                
+                <form class="d-flex justify-content-end font-bold" action="search.php" onsubmit="return validateSearch();">
                     <div class="search d-flex justify-content-center align-items-center">
-                        <input class="search-input" type="search" placeholder="Search for items..." size="25">
+                        <input class="search-input" type="search" placeholder="Search for items..." size="25" id="searchBar" name="search" value = "<?php echo $_GET['search']; ?>">
                         <button class="primary-btn me-3 search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
                     </div>
 
@@ -157,29 +161,38 @@ if (isset($_SESSION['user_id'])) { ?>
 ?>
 
 <?php
-        /*if (isset($_COOKIE['success']) || isset($_COOKIE['error'])) {
+        if (isset($_COOKIE['success']) || isset($_COOKIE['error'])) {
             $message = isset($_COOKIE['success']) ? $_COOKIE['success'] : $_COOKIE['error'];
 
-            echo '
-    <div class="toast-container position-fixed end-0 p-3 ">
-        <div class="toast align-items-center ' . (isset($_COOKIE['success']) ? 'bg-success' : 'bg-danger') . ' text-white border-0" data-bs-delay="3000" role="alert" aria-live="assertive" aria-atomic="true" id="myToast">
-            <div class="d-flex">
-            <div class="toast-body">
-                ' . $message . '
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+    //         echo '
+    // <div class="toast-container position-fixed end-0 p-3 ">
+    //     <div class="toast align-items-center ' . (isset($_COOKIE['success']) ? 'bg-success' : 'bg-danger') . ' text-white border-0" data-bs-delay="3000" role="alert" aria-live="assertive" aria-atomic="true" id="myToast">
+    //         <div class="d-flex">
+    //         <div class="toast-body">
+    //             ' . $message . '
+    //         </div>
+    //         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    //         </div>
+    //     </div>
+    // </div>
+    // <script>
+    //     window.onload = function() {
+    //         var myToast = document.getElementById("myToast");
+    //         var toast = new bootstrap.Toast(myToast);
+    //         toast.show();
+    //     };
+    // </script>';
+    echo '
+        <div class="alert ' . (isset($_COOKIE['success']) ? 'alert-success' : 'alert-danger') . '" role="alert" id="myAlert">
+            '.$message.'
         </div>
-    </div>
-    <script>
-        window.onload = function() {
-            var myToast = document.getElementById("myToast");
-            var toast = new bootstrap.Toast(myToast);
-            toast.show();
-        };
-    </script>
-';
-        }*/
+        <script>
+            setTimeout(()=>{
+                const alert = bootstrap.Alert.getOrCreateInstance("#myAlert");
+                alert.close();
+            },3000);
+        </script>
+        ';
+        }
 
         ?>
-    
