@@ -70,9 +70,9 @@ if (isset($_SESSION['user_id'])) { ?>
                     <li class="nav-item">
                         <a class="nav-link  <?php echo $title=="About"?"active":"";?>" href="about.php">About</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link  <?php echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <form class="d-flex justify-content-end font-bold">
                     <div class="search d-flex justify-content-center align-items-center">
@@ -132,9 +132,9 @@ if (isset($_SESSION['user_id'])) { ?>
                 <li class="nav-item">
                     <a class="nav-link  <?php echo $title=="About"?"active":"";?>" href="about.php">About</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link  <?php echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
-                </li>
+                </li> -->
             </ul>
             <!-- <form class="d-flex justify-content-end font-bold">
                 <div class="search d-flex justify-content-center align-items-center">

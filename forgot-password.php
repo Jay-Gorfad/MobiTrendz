@@ -19,7 +19,7 @@ use PHPMailer\PHPMailer\Exception;
                         <h2 class="mb-3 text-center">Forgot Password?</h2>
                         <div class="mb-4 text-center">Enter an email account to reset password</div>
                         <form action="" method="POST" onsubmit="return validateForgotPasswordForm()">
-                            <input type="text" id="otpEmail" class="w-100 mb-3" placeholder="Email">
+                            <input type="text" id="otpEmail" name="email" class="w-100 mb-3" placeholder="Email">
                             <p id="otpEmailError" class="error mb-2"></p>
                             <input type="submit" name="submit" value="Send OTP" class="btn-msg w-100">
                             <div class="mt-4 text-center">
