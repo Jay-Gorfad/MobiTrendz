@@ -29,6 +29,10 @@ if (isset($_SESSION['user_id']))
 $query = "select count(*) as cart_total from cart_details_tbl where User_Id = " . $_SESSION['user_id'];
 $result = mysqli_query($con, $query);
 $carttotal = mysqli_fetch_assoc($result);
+
+$query = "select count(*) as wishlist_total from wishlist_details_tbl where User_Id = " . $_SESSION['user_id'];
+$result = mysqli_query($con, $query);
+$wishlisttotal = mysqli_fetch_assoc($result);
 }
 ?>
 
@@ -98,7 +102,7 @@ if (isset($_SESSION['user_id'])) { ?>
                         <a href="wishlist.php" class="icon-link position-relative me-3">
                             <i class="fa fa-heart fs-4"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                3 <!-- Replace with dynamic count from database -->
+                            <?php echo $wishlisttotal['wishlist_total']; ?> <!-- Replace with dynamic count from database -->
                             </span>
                         </a>
 
