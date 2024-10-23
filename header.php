@@ -150,8 +150,8 @@ if (isset($_SESSION['user_id'])) { ?>
                     <button class="primary-btn me-3 search-button"><i class="fa fa-search" aria-hidden="true"></i></button>
                 </div> -->
 
-                <form class="d-flex flex-nowrap justify-content-end">
-                            <input class="search-input" type="search" placeholder="Search for items..." size="25" id="SearchSection2">
+                <form class="d-flex flex-nowrap justify-content-end" action="search.php" onsubmit="return validateSearch();">
+                            <input class="search-input" type="search" placeholder="Search for items..." size="25" id="searchBar" name="search" value = "<?php echo $_GET['search']; ?>">
                             <button class="primary-btn me-3 search-button" id="SearchSection3"><i class="fa fa-search" aria-hidden="true"></i></button>
                             <a class="header-btn" href="register.php">Register</a>
                             <a class="header-btn" href="login.php">Login</a>
