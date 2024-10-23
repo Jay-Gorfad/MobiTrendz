@@ -39,7 +39,7 @@ if (mysqli_num_rows($result) == 1) {
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Phone</label>
-                                    <input type="text" class="w-100" placeholder="Your Phone*" id="phone" value="9874563200">
+                                    <input type="text" class="w-100" placeholder="Your Phone*" id="phone" value="9876543210">
                                     <p id="phoneError" class="error"></p>
                                 </div>
                             
