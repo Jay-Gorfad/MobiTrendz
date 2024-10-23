@@ -325,98 +325,21 @@ function contactFormValidation() {
 }
 
 
-function validateMyAccountForm() {
-    const firstNameInput = document.getElementById('firstName');
-    const firstNameError = document.getElementById('firstNameError');
-    const lastNameInput = document.getElementById('lastName');
-    const lastNameError = document.getElementById('lastNameError');
-    const emailInput = document.getElementById('email');
-    const emailError = document.getElementById('emailError');
-    const phoneInput = document.getElementById('phone');
-    const phoneError = document.getElementById('phoneError');
+function validateChangePassword(){
     const currentPasswordInput = document.getElementById('currentPassword');
     const currentPasswordError = document.getElementById('currentPasswordError');
     const newPasswordInput = document.getElementById('newPassword');
     const newPasswordError = document.getElementById('newPasswordError');
     const confirmPasswordInput = document.getElementById('confirmPassword');
     const confirmPasswordError = document.getElementById('confirmPasswordError');
-
     let isValid = true;
-
-    const firstNameValue = firstNameInput.value.trim();
-    if (!firstNameValue) {
-        firstNameError.style.color="red";
-        firstNameError.innerText = 'First Name is required.';
-        isValid = false;
-    } else if (/\d/.test(firstNameValue)) {
-        firstNameError.style.color="red";
-        firstNameError.innerText = 'First Name should not contain digits.';
-        isValid = false;
-    } else if (firstNameValue.length > 50) {
-        firstNameError.style.color="red";
-        firstNameError.innerText = 'First Name cannot exceed 50 characters.';
-        isValid = false;
-    } else {
-        firstNameError.innerText = ''; 
-    }
-
-    const lastNameValue = lastNameInput.value.trim();
-    if (!lastNameValue) {
-        lastNameError.style.color="red";
-        lastNameError.innerText = 'Last Name is required.';
-        isValid = false;
-    } else if (/\d/.test(lastNameValue)) {
-        lastNameError.style.color="red";
-        lastNameError.innerText = 'Last Name should not contain digits.';
-        isValid = false;
-    } else if (lastNameValue.length > 50) {
-        lastNameError.style.color="red";
-        lastNameError.innerText = 'Last Name cannot exceed 50 characters.';
-        isValid = false;
-    } else {
-        lastNameError.innerText = '';
-    }
-
-
-    const emailValue = emailInput.value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailValue) {
-        emailError.style.color="red";
-        emailError.innerText = 'Email is required.';
-        isValid = false;
-    } else if (!emailPattern.test(emailValue)) {
-        emailError.style.color="red";
-        emailError.innerText = 'Invalid email format.';
-        isValid = false;
-    } else if (emailValue.length > 100) {
-        emailError.style.color="red";
-        emailError.innerText = 'Email cannot exceed 100 characters.';
-        isValid = false;
-    } else {
-        emailError.innerText = ''; 
-    }
-
-    const phoneValue = phoneInput.value.trim();
-    const phonePattern = /^\d{10}$/; 
-    if (!phoneValue) {
-        phoneError.style.color="red";
-        phoneError.innerText = 'Phone number is required.';
-        isValid = false;
-    } else if (!phonePattern.test(phoneValue)) {
-        phoneError.style.color="red";
-        phoneError.innerText = 'Phone number must be 10 digits.';
-        isValid = false;
-    } else {
-        phoneError.innerText = ''; 
-    }
 
     const currentPasswordValue = currentPasswordInput.value.trim();
     if (!currentPasswordValue) {
-        currentPasswordError.style.color="red";
         currentPasswordError.innerText = 'Current password is required.';
         isValid = false;
     } else if (currentPasswordValue.length < 8) {
-        currentPasswordError.style.color="red";
+
         currentPasswordError.innerText = 'Current password must be at least 8 characters long.';
         isValid = false;
     } else {
@@ -425,11 +348,9 @@ function validateMyAccountForm() {
 
     const newPasswordValue = newPasswordInput.value.trim();
     if (!newPasswordValue) {
-        newPasswordError.style.color="red";
         newPasswordError.innerText = 'New password is required.';
         isValid = false;
     } else if (newPasswordValue.length < 8) {
-        newPasswordError.style.color="red";
         newPasswordError.innerText = 'New password must be at least 8 characters long.';
         isValid = false;
     } else {
@@ -439,16 +360,57 @@ function validateMyAccountForm() {
 
     const confirmPasswordValue = confirmPasswordInput.value.trim();
     if (!confirmPasswordValue) {
-        confirmPasswordError.style.color="red";
         confirmPasswordError.innerText = 'Confirm password is required.';
         isValid = false;
     } else if (confirmPasswordValue !== newPasswordValue) {
-        confirmPasswordError.style.color="red";
         confirmPasswordError.innerText = 'Passwords do not match.';
         isValid = false;
     } else {
         confirmPasswordError.innerText = '';
     }
+    currentPasswordError.style.color="red";
+    newPasswordError.style.color="red";
+    confirmPasswordError.style.color="red";
+
+    return isValid;
+    
+}
+function validateMyAccountForm() {
+    const firstNameInput = document.getElementById('firstName');
+    const firstNameError = document.getElementById('firstNameError');
+    const lastNameInput = document.getElementById('lastName');
+    const lastNameError = document.getElementById('lastNameError');
+
+    let isValid = true;
+
+    const firstNameValue = firstNameInput.value.trim();
+    if (!firstNameValue) {
+        firstNameError.innerText = 'First Name is required.';
+        isValid = false;
+    } else if (/\d/.test(firstNameValue)) {
+        firstNameError.innerText = 'First Name should not contain digits.';
+        isValid = false;
+    } else if (firstNameValue.length > 50) {
+        firstNameError.innerText = 'First Name cannot exceed 50 characters.';
+        isValid = false;
+    } else {
+        firstNameError.innerText = ''; 
+    }
+
+    const lastNameValue = lastNameInput.value.trim();
+    if (!lastNameValue) {
+        lastNameError.innerText = 'Last Name is required.';
+        isValid = false;
+    } else if (/\d/.test(lastNameValue)) {
+        lastNameError.innerText = 'Last Name should not contain digits.';
+        isValid = false;
+    } else if (lastNameValue.length > 50) {
+        lastNameError.innerText = 'Last Name cannot exceed 50 characters.';
+        isValid = false;
+    } else {
+        lastNameError.innerText = '';
+    }
+
 
     return isValid;
 }
