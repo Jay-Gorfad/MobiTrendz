@@ -1,11 +1,12 @@
 <?php include('header.php'); ?>
 
 <?php
+$user_id = $_SESSION['user_id'];
+$product_id = $_GET['product_id'];
 $query = "select product.Product_Id, product.Display, product.Processor,product.RAM, product.Storage, product.Rear_Camera, product.Front_Camera, product.Battery, product.Operating_System, product.Color, product.Product_Name, product.Product_Image, product.Description, product.Sale_Price, round(product.Sale_Price-(product.Sale_Price*product.Discount/100),2) 'Price', count(Rating) as 'Review_Count', round(avg(Rating)) as 'Rating' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id where product.Product_Id=".$_GET['product_id'];
 $result = mysqli_query($con,$query);
 $product = mysqli_fetch_assoc($result);
-$product_id=$_GET['product_id'];
-$user_id = $_SESSION['user_id'];
+
 ?>
 
     <div class="container sitemap">
@@ -122,50 +123,46 @@ $user_id = $_SESSION['user_id'];
     <h4 class="mb-4 text-center fw-bold">Customer Reviews</h4>
         <div class="row">
         <?php 
-            if(isset($_SESSION['user_id']))
-            {
                 $query = "select count(*) from order_details_tbl as od
-                left join order_header_tbl as oh ON od.Order_Id = oh.Order_Id 
-                where Product_Id=$product_id and User_Id IS NOT NULL and User_Id=$user_id ";
-            $result = mysqli_query($con, $query);
-            $orderCount = mysqli_fetch_array($result);
-            $hasOrdered = $orderCount[0]>0 ? true : false;
+                    left join order_header_tbl as oh ON od.Order_Id = oh.Order_Id 
+                    where Product_Id=$product_id and User_Id IS NOT NULL and User_Id=$user_id ";
+                $result = mysqli_query($con, $query);
+                $orderCount = mysqli_fetch_array($result);
+                $hasOrdered = $orderCount[0]>0 ? true : false;
 
-            }
-              
                 if($hasOrdered)
                 {
                     ?>
-                    <div class="col-6">
-                    <form method="post" onsubmit="return validateReviewForm();">
-                        <div>
-                            <input type="hidden" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
-                            <label for="userRating" class="d-block">Rating</label>
-                            <select class="form w-100 p-2 rounded" id="userRating" name="rating">
-                                <option value="">Select rating</option>
-                                <option value="1">1 Star</option>
-                                <option value="2">2 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="5">5 Stars</option>
-                            </select>
-                            <p id="userRatingError" class="text-danger"></p>
-                        </div>
-                        <div >
-                            <label for="userReview " class="d-block">Review</label>
-                            <textarea  id="userReview" class="w-100" rows="3" placeholder="Write your review" name="review" ></textarea>
-                            <p id="userReviewError" class="text-danger"></p>
-                        </div>
-                        <button type="submit" class="primary-btn" name="add_review_btn">Leave a review</button>
-                    </form>
-                    </div>
-                            <?php
+            <div class="col-6">
+            <form method="post" onsubmit="return validateReviewForm();">
+                <div>
+                    <input type="hidden" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
+                    <label for="userRating" class="d-block">Rating</label>
+                    <select class="form w-100 p-2 rounded" id="userRating" name="rating">
+                        <option value="">Select rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                    <p id="userRatingError" class="text-danger"></p>
+                </div>
+                <div >
+                    <label for="userReview " class="d-block">Review</label>
+                    <textarea  id="userReview" class="w-100" rows="3" placeholder="Write your review" name="review" ></textarea>
+                    <p id="userReviewError" class="text-danger"></p>
+                </div>
+                <button type="submit" class="primary-btn" name="add_review_btn">Leave a review</button>
+            </form>
+            </div>
+            <?php
                 }
                 else
                 {
                     ?>
                     <div class="col-6 d-flex  justify-content-center">
-                        <h5>You need to order first to give review on this product!</h5>
+                        <h5>Please place an order before reviewing this mobile.</h5>
                     </div>
                     <?php
                 }
@@ -177,9 +174,13 @@ $user_id = $_SESSION['user_id'];
             </div>
         </div>
 
-        <h4 class="mt-5 mb-4 text-center fw-bold">Similar Products</h4>
-        <div class="d-flex justify-content-start mt-3">
-            <?php display_products();?>
+        <section class=" mt-5 container">
+        <div class="d-flesectionfy-content-between featured-products">
+            <h4 class="text-center fw-bold">More Products</h4>
+            
+        </div>
+        <div class="row justify-content-start pt-3">
+            <?php display_products($con);?>
         </div>
     </div>
         
@@ -203,93 +204,77 @@ if(isset($_POST['add_review_btn']))
             echo "<script>alert(".mysqli_error($con).")</script>";
     }
 
-function display_products() {
-    for($i=1;$i<=4;$i++) {
-        echo '
-        <div class="col-md-3 gap col-sm-4 p-2 col-6">
-            <div class="card">
-                <a href="product-details.php?id=1">
-                    <div class="product-image">
-                        <img class="img-thumbnail p-4" src="img/products/15Plus.jpg" alt="Card image cap">
-                    </div>
-                </a>
-                <div class="card-body product-body px-3 ">
-                    <h6 class="card-title d-flex justify-content-center">Phone</h6>
-                    <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
-                            <span class="shop-price">₹1,20,000.00</span>
-                            <span class="striked-price">₹1,50,000.00</span>
-                    </div>
-                    <div class="rating-section mb-2 d-flex justify-content-center">
-                        <div class="ratings">
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star checked"></span>
-                            <span class="fa fa-star"></span>
-                            <span class="fa fa-star"></span>
+    function display_products($con) {
+        $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, product.Sale_Price, ROUND((product.Sale_Price - product.Sale_Price * product.Discount / 100), 2) AS 'Price',COALESCE(AVG(review.Rating), 0) AS 'Average_Rating', COUNT(review.Review_Id) AS 'Review_Count'
+        FROM product_details_tbl AS product
+        LEFT JOIN review_details_tbl AS review ON product.Product_Id = review.Product_Id
+        WHERE product.is_active = 1
+        GROUP BY product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, product.Sale_Price
+        ";
+        $result = mysqli_query($con, $query);
+        while($product = mysqli_fetch_assoc($result)){
+        ?>
+            <div class="col-lg-3 col-md-4 gap p-2 col-6">
+                <div class="card">
+                    <a href="product-details.php?product_id=<?php echo $product["Product_Id"]?>">
+                        <div class="product-image">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </div>
-                        <div class="review-count ps-1">(95)</div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-around ">
-                        <a class="order-link cart-btn flex-grow-1" href="cart.php">Add to cart</a>
+                    </a>
+                    <div class="card-body product-body px-3 ">
+                        <h6 class="card-title d-flex justify-content-center text-nowrap"><?php echo $product['Product_Name'] ?></h6>
+                        <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
+                                <span class="shop-price">₹<?php echo $product["Price"]; ?></span>
+                                <span class="striked-price">₹<?php echo $product["Sale_Price"]; ?></span>
+                        </div>
+                        <div class="rating-section mb-2 d-flex justify-content-center">
+                            <div class="ratings text-nowrap">
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=1?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=2?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=3?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=4?'checked':''; ?>"></span>
+                                    <span class="fa fa-star <?php echo $product['Average_Rating']>=5?'checked':''; ?>"></span>
+                            </div>
+                            <div class="review-count ps-1">(<?php echo $product['Review_Count']; ?>)</div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-around ">
+                            <a class="order-link cart-btn flex-grow-1" href="cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Add to cart</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        ';
+            <?php
+        }
     }
-}
 
 function display_review($product,$con){
-
     $product_id =$product["Product_Id"];
-    $query = "SELECT 
-        r.Review_Id, r.Rating, r.Review, r.Review_Date, 
-        p.Product_Id, p.Product_Name, p.Product_Image, 
-        u.User_Id, u.Name,
-        r1.Review_Id as 'Reply_Id', r1.Review as 'Reply' 
-    FROM review_details_tbl r
-    JOIN product_details_tbl p ON r.Product_Id = p.Product_Id
-    JOIN user_details_tbl u ON r.User_Id = u.User_Id
-    left join review_details_tbl r1 on r.Review_Id = r1.Reply_To
-    where p.is_active=1 and p.Product_Id=$product_id";
+    $query = "SELECT * FROM review_details_tbl as review left join user_details_tbl as user on user.User_Id = review.User_Id WHERE review.Product_Id='$product_id'";
     $result = mysqli_query($con, $query);
 
     if (mysqli_num_rows($result) > 0) {
         while($review = mysqli_fetch_assoc($result)) {
             
             $rating = intval($review['Rating']); 
-            $review_text = $review['Review'];
+            $review_text = htmlspecialchars($review['Review']);
             $review_date = date('F j, Y', strtotime($review['Review_Date']));
             $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
-            $reply= $review["Reply"];
-        
-            $user_name = $review['Name']; 
             
-            echo '
-            <div class="col-md-6 mb-4">
-            <div class="review-card  card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">'. $user_name .'</h5>
-                    <h6 class="card-subtitle mb-2 text-warning">'. $stars .'</h6>
-                    <p class="card-text">'. $review_text .'</p>
-                    <p class="text-muted mb-0"><small>Posted on '. $review_date .'</small></p>
-                </div>
-                ';
-                if(isset($review['Reply_Id']))
-                {
-                    $reply_text = $review["Reply"];
-                    echo '<div class="card-body ">
-                    <h5 class="card-title">Admin</h5>
-                    <p class="card-text ms-5">'. $reply_text .'</p>
-                </div>';
-                }
-                echo '
+        
+            $user_name = $review['Name'];
+        echo '
+        <div class="col-md-6 card mb-4 review-card">
+            <div class="card-body">
+                <h5 class="card-title">'. htmlspecialchars($user_name) .'</h5>
+                <h6 class="card-subtitle mb-2 text-warning">'. $stars .'</h6>
+                <p class="card-text">'. $review_text .'</p>
+                <p class="text-muted mb-0"><small>Posted on '. $review_date .'</small></p>
             </div>
-            </div>';
-        }
-    } else {
-        echo '<p>No reviews yet for this product. Be the first to leave a review!</p>';
+        </div>';
     }
+} else {
+    echo '<p>No reviews yet for this product. Be the first to leave a review!</p>';
+}
 
-    }
+}
 ?>
