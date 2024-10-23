@@ -24,22 +24,22 @@ if (mysqli_num_rows($result) == 1) {
                             <div class="row g-2">
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">First Name</label>
-                                    <input type="text" class="w-100" placeholder="Your First Name*" id="firstName" value="Yagnik">
+                                    <input type="text" class="w-100" placeholder="Your First Name*" id="firstName" value="Jay">
                                     <p id="firstNameError" class="error"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Last Name</label>
-                                    <input type="text" class="w-100" placeholder="Your Last Email*" id="lastName" value="Desai">
+                                    <input type="text" class="w-100" placeholder="Your Last Email*" id="lastName" value="Barasiya">
                                     <p id="lastNameError" class="error"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Email</label>
-                                    <input type="text" class="w-100" placeholder="Your Email*" id="email" value="ydesai00@rku.ac.in">
+                                    <input type="text" class="w-100" placeholder="Your Email*" id="email" value="jbarasiya302@rku.ac.in">
                                     <p id="emailError" class="error"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Phone</label>
-                                    <input type="text" class="w-100" placeholder="Your Phone*" id="phone" value="987456320">
+                                    <input type="text" class="w-100" placeholder="Your Phone*" id="phone" value="9874563200">
                                     <p id="phoneError" class="error"></p>
                                 </div>
                             
