@@ -1114,3 +1114,27 @@ input[type="submit"], button {
 .delete-btn{
     background-color: var(--delete);
 }
+
+
+
+.quantity>div{
+    border:1px solid black;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right:6px;
+    cursor: pointer;
+}
+.quantity div:hover {
+    background-color:var(--primary);
+    color: white;
+    border: none;
+}
+.quantity div.selected {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+}

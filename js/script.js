@@ -669,3 +669,12 @@ function validateSearch(){
     }
     return true;
 }
+
+function selectQuantity(selectedDiv, value) {
+    const quantities = document.querySelectorAll('.quantity div');
+    quantities.forEach(div => {
+        div.classList.remove('selected');
+    });
+    selectedDiv.classList.add('selected');
+    document.getElementById('selectedQuantity').value = value;
+}

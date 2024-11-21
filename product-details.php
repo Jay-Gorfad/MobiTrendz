@@ -53,10 +53,12 @@ $user_id = $_SESSION['user_id'];
                 <!-- Quantity Selection -->
                 <div class="row align-items-center mt-3 w-100">
                     <div class="col-3">Quantity</div>
-                    <div class="col-9 d-flex align-items-center">
-                        <button class="quantity-button qty-minus">-</button>
-                        <input type="number" id="quantity" name="quantity" value="1" class="quantity-input text-center">
-                        <button class="quantity-button qty-plus">+</button>
+                    <div class="col-9 quantity d-flex align-items-center">
+                        <div onclick="selectQuantity(this, 1)">1</div>
+                        <div onclick="selectQuantity(this, 2)">2</div>
+                        <div onclick="selectQuantity(this, 3)">3</div>
+                        <div onclick="selectQuantity(this, 4)">4</div>
+                        <div onclick="selectQuantity(this, 5)">5</div>
                     </div>
                 </div>
 
