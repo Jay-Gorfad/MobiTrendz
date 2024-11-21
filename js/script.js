@@ -16,25 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
         qtyInput.value = currentValue + 1;
     });
 });
-
-
-//checkout page - different shipping address feature
-const choice = document.querySelector('#choice');
-
-if(choice){
-
-    choice.addEventListener('change',()=>{
-        if(choice.checked){
-            document.querySelector('.js-shipping-details').classList.remove('invisible');
-        }
-        else{
-            document.querySelector('.js-shipping-details').classList.add('invisible');
-        }
-    });
-}
-
-
-//cart page - to change the quantity of the certain cart item
 const quantityModifier = Array.from(document.getElementsByClassName('qty-mod'));
 
 if(quantityModifier && quantityModifier.length>0){
@@ -70,6 +51,22 @@ if(quantityModifier && quantityModifier.length>0){
         });
     });
 }
+
+//checkout page - different shipping address feature
+const choice = document.querySelector('#choice');
+
+if(choice){
+
+    choice.addEventListener('change',()=>{
+        if(choice.checked){
+            document.querySelector('.js-shipping-details').classList.remove('invisible');
+        }
+        else{
+            document.querySelector('.js-shipping-details').classList.add('invisible');
+        }
+    });
+}
+
 
 // Validations
 

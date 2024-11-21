@@ -22,8 +22,9 @@ if (isset($_GET['product_id']))
     {
         $query = "INSERT INTO cart_details_tbl(Product_Id, Quantity, User_Id) VALUES ('$product_id', '$quantity', '$user_id')"; 
         if (mysqli_query($con, $query)) {
-            echo "<script>alert('Product added to cart successfully!');
-            location.href='cart.php';</script>";
+            setcookie('success', "Product added to cart successfully!", time() + 5, "/");
+            echo "<script>
+            location.replace('cart.php');</script>";
             exit;
         } 
         else 
@@ -32,19 +33,18 @@ if (isset($_GET['product_id']))
         }
     }   
 }
-$query = "select p.Product_Name,c.Product_Id, p.Product_Image, round(p.Sale_Price-p.Sale_Price*p.Discount/100,2) as 'Price',round(p.Sale_Price-p.Sale_Price*p.Discount/100*c.Quantity,2) as 'Subtotal',c.Quantity from cart_details_tbl as c left join product_details_tbl as p on c.Product_Id = p.Product_Id where User_Id = ".$user_id;
+$query = "select p.Product_Name,c.Product_Id, p.Product_Image, round(p.Sale_Price-p.Sale_Price*p.Discount/100,2) as 'Price',round((p.Sale_Price-p.Sale_Price*p.Discount/100)*c.Quantity,2) as 'Subtotal',c.Quantity from cart_details_tbl as c left join product_details_tbl as p on c.Product_Id = p.Product_Id where User_Id = ".$user_id;
 $result = mysqli_query($con,$query);
 ?>
     <div class="container sitemap cart-table">
         <p class="my-5"><a href="index.php" class="text-decoration-none dim link">Home /</a> Cart</p>
         <?php
+            $total=0;
             if(mysqli_num_rows($result) > 0){
                 ?>
-                <form action="update-cart.php" method="post">
+                <!-- <form action="update-cart.php" method="post"> -->
         <!-- table start -->
-        <?php
-                while($product = mysqli_fetch_assoc($result)){
-                    ?>
+        
         <div class="row font-bold bg-light">
             <div class="col-2">
                 Product Image
@@ -59,7 +59,12 @@ $result = mysqli_query($con,$query);
             <div class="col-2 text-center">Subtotal</div>
             <div class="col-2 text-center">Actions</div>
         </div>
-
+            
+        <?php
+                while($product = mysqli_fetch_assoc($result)){
+                    $total += $product['Subtotal'];
+                    ?>
+        <form action="update-cart.php" method="post">
         <div class="row mb-2">
             <div class="col-2">
                 <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" style="width: 50px; height: 50px; object-fit: cover;">
@@ -67,19 +72,20 @@ $result = mysqli_query($con,$query);
             <div class="col-2">
                 <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>
             </div>
-            <div class="col-2 text-center">₹<?php echo $product["Price"]; ?></div>
+            <div class="col-2 d-inline-block text-center">₹<?php echo $product["Price"]; ?></div>
             <div class="col-2 ">
-                <div class="d-flex">
+                <div class="d-flex  qty-mod">
+
                     <button class="number-button qty-minus">-</button>
-                    <input type="hidden" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
-                    <input type="number" class="qty" name="quantity" id="" value="<?php echo $product["Quantity"]; ?>">
+                    <input type="number" name="quantity" id="" value="<?php echo $product["Quantity"]; ?>">
                     <button class="number-button qty-plus">+</button>
+                    <input type="hidden" class="qty" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
                 </div>
             </div>
             <div class="col-2 text-center">₹<?php echo $product["Subtotal"]; ?></div>
-            <div class="col-2 d-flex">
-                <input type="submit" class="primary-btn update-btn" value="Update">
-                <a class="primary-btn delete-btn" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Delete</a>
+            <div class="col-2 d-flex justify-content-center align-items-center">
+                
+                <a class="primary-btn delete-btn mb-3" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Delete</a>
             </div>
         </div>
         </form>
