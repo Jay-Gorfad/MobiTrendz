@@ -1,4 +1,8 @@
-<?php include('header.php'); ?>
+<?php include('header.php'); 
+
+$user_id = $_SESSION['user_id'];
+$product_id = $_GET['product_id'];
+?>
 
 <?php
 $query = "select product.Product_Id, product.Display, product.Processor,product.RAM, product.Storage, product.Rear_Camera, product.Front_Camera, product.Battery, product.Operating_System, product.Color, product.Product_Name, product.Product_Image, product.Description, product.Sale_Price, round(product.Sale_Price-(product.Sale_Price*product.Discount/100),2) 'Price', count(Rating) as 'Review_Count', round(avg(Rating)) as 'Rating' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id where product.Product_Id=".$_GET['product_id'];
@@ -187,14 +191,15 @@ $user_id = $_SESSION['user_id'];
         
 <?php include('footer.php'); 
 
+
 if(isset($_POST['add_review_btn']))
     {
         $product_id = $_POST["product_id"];
         $rating = $_POST["rating"];
         $review = $_POST["review"];
-        $user_id = isset($_SESSION["user_id"])?$_SESSION["user_id"]:5;
+        $user_id = isset($_SESSION["user_id"])?$_SESSION["user_id"]:'';
 
-        $query = "insert into review_details_tbl values('$product_id', $user_id, $rating, '$review', NOW())";
+        $query = "insert into review_details_tbl values('$product_id', $user_id, $rating, '$review',NOW())";
         $sql = mysqli_query($con, $query);
 
         if($sql)

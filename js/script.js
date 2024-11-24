@@ -675,3 +675,13 @@ function selectQuantity(selectedDiv, value) {
     selectedDiv.classList.add('selected');
     document.getElementById('selectedQuantity').value = value;
 }
+
+function validateOfferCode(){
+    var offerCodeText = document.getElementById('offerCodeText');
+    if(offerCodeText.value === '')
+    {
+        alert('Enter offer code first to apply!');
+        return false;
+    }
+    return true;
+}
