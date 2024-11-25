@@ -669,8 +669,13 @@ input[type="submit"], button {
     transition: transform 0.3s ease;
 }
 
+.product-image:hover button, .product-image:hover .like,.product-image:hover{
+    opacity: 1;
+    cursor: pointer;  
+}
+
 .product-image:hover img {
-    transform: scale(1.1); /* Optional: zoom effect on hover */
+    transform: scale(1.03); /* Optional: zoom effect on hover */
 }
 
 .product-body .price ,.shop-price{
@@ -686,17 +691,23 @@ input[type="submit"], button {
     padding-left: 8px;
 }
 
-.product-body .primary-btn{
+.product-body .primary-btn,.like{
     color: var(--primary);
-    background-color: var(--secondary);
+    background-color: #0D4FCF;
     transition: background-color 0.15s, color 0.15s;
+    width:max-content;
+}
+
+.about h3,.about h2{
+    color: #0D4FCF;
+    font-weight: 600;
 }
 .like {
     color:black;
     font-size: 25px;
 }
 
-.product-body .primary-btn:hover{
+.product-body .primary-btn:hover, .like:hover{
     color: white;
     background-color: var(--primary);
 }
@@ -1137,4 +1148,20 @@ input[type="submit"], button {
     background-color: var(--primary);
     color: white;
     border: none;
+}
+
+.like{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top:10px;
+    font-size:17px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }

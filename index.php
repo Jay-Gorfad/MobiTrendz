@@ -86,7 +86,7 @@ $total_banners = mysqli_num_rows($result);
 
         </div>
         <div class="row justify-content-start pt-3">
-            <?php display_products2($con);?>
+            <?php display_products($con);?>
         </div>
     </section>
 <?php include('footer.php'); ?>
@@ -104,11 +104,13 @@ $total_banners = mysqli_num_rows($result);
         ?>
             <div class="col-lg-3 col-md-4 gap p-2 col-6">
                 <div class="card">
-                    <a href="product-details.php?product_id=<?php echo $product["Product_Id"]?>">
                         <div class="product-image">
-                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
+                            <a href="product-details.php?product_id=<?php echo $product["Product_Id"]?>">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Product Image">
+                            </a>
+                            <div class="like"><i class="fa-regular fa-heart"></i></div>
                         </div>
-                    </a>
+                    
                     <div class="card-body product-body px-3 ">
                         <h6 class="card-title d-flex justify-content-center text-nowrap"><?php echo $product['Product_Name'] ?></h6>
                         <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">

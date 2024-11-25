@@ -183,10 +183,10 @@ $user_id = $_SESSION['user_id'];
             </div>
         </div>
 
-        <h4 class="mt-5 mb-4 text-center fw-bold">Similar Products</h4>
+        <!-- <h4 class="mt-5 mb-4 text-center fw-bold">Similar Products</h4>
         <div class="d-flex justify-content-start mt-3">
-            <?php display_products();?>
-        </div>
+            <?php //display_products();?>
+        </div> -->
     </div>
         
 <?php include('footer.php'); 

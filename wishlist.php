@@ -1,19 +1,72 @@
-<?php include('header.php'); ?>
+<?php include('header.php'); 
+
+$user_id = $_SESSION['user_id'];
+if (isset($_GET['product_id'])) 
+{
+    if (isset($_SESSION['user_id'])) 
+    {
+        $user_id = $_SESSION['user_id'];
+    } 
+    else 
+    {
+        echo "<script>location.href='login.php';</script>";
+        exit;
+    }
+    $product_id = $_GET['product_id'];
+    if(record_exists($user_id, $product_id, $con))
+    {
+        $query = "delete from wishlist_details_tbl where Product_Id=$product_id and User_Id=$user_id";
+        if(mysqli_query($con, $query))
+        {
+            setcookie('success', "Product removed from wishlist successfully!", time() + 5, "/");
+            echo "<script>
+            location.replace('shop.php');</script>";
+            exit;
+        }    
+    }
+    else
+    {
+        $query = "INSERT INTO wishlist_details_tbl(Product_Id, User_Id) VALUES ('$product_id', '$user_id')"; 
+        if (mysqli_query($con, $query)) {
+            setcookie('success', "Product added to wishlist successfully!", time() + 5, "/");
+            echo "<script>
+            location.replace('wishlist.php');</script>";
+            exit;
+        } 
+        else 
+        {
+            echo "Error: " . mysqli_error($con);
+        }
+    }
+
+
+    
+}
+$query = "select p.Product_Name,p.Product_Id, p.Product_Image, round(p.Sale_Price-p.Sale_Price*p.Discount/100,2) as 'Price' from wishlist_details_tbl as w left join product_details_tbl as p on w.Product_Id = p.Product_Id where User_Id = ".$user_id;
+$result = mysqli_query($con,$query);
+
+?>
     <div class="container sitemap cart-table">
         <p class="my-5"><a href="index.php" class="text-decoration-none dim link">Home /</a> Wishlist</p>
         <!-- table start -->
+        <?php
+            if(mysqli_num_rows($result) > 0){
+        ?>
         <div class="row font-bold bg-light">
             <div class="col-2">
-                Product Image
+            <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" class="image-item d-inline-block">
             </div>
             <div class="col-3">
-                Product Name
+            <?php echo $product["Product_Name"]; ?>
             </div>
-            <div class="col-2 text-center">Price</div>
+            <div class="col-2 text-center">₹<?php echo $product["Price"]; ?></div>
             <div class="col-2 text-center">Subtotal</div>
             <div class="col-3 text-center">Actions</div>
         </div>
-
+                <?php 
+                while($product = mysqli_fetch_assoc($result))
+                {
+                    ?>
         <div class="row mb-2">
             <div class="col-2">
                 <img src="img/products/phone.png" alt="Phone image" class="image-item d-inline-block">
@@ -28,6 +81,10 @@
                 <a class="primary-btn not-link ">Remove</a>
             </div>
         </div>
+        <?php
+            }
+        }
+            ?>
     </div>
     <div class="container mb-5">
         <div class="d-flex justify-content-between align-items-center cart-page mb-5">
