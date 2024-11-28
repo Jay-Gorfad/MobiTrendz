@@ -131,6 +131,9 @@ $result = mysqli_query($con,$query);
                         <div>Shipping:</div>
                         <div class="price">₹<?php echo $shipping_charge; ?></div>
                     </div>
+                    <div id="discount-section">
+
+                    </div>
                     <div class="my-2 border"></div>
                     <div class="d-flex align-items-center p-2">
                         <div>Total:</div>
