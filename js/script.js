@@ -685,3 +685,15 @@ function validateOfferCode(){
     }
     return true;
 }
+
+function showHideForm(){
+    const addBtn=document.getElementById('add-new-address');
+    const billingForm=document.querySelector('.billing-details');
+        if (billingForm.style.display === 'none') {
+            billingForm.style.display = 'block';
+            addBtn.innerHTML = "Close";
+        } else {
+            billingForm.style.display = 'none';
+            addBtn.innerHTML = "Add New Address";
+        }
+    }

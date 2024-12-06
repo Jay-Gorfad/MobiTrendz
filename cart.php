@@ -85,7 +85,8 @@ $result = mysqli_query($con,$query);
             <div class="col-2 text-center">₹<?php echo $product["Subtotal"]; ?></div>
             <div class="col-2 d-flex justify-content-center align-items-center">
                 
-                <a class="primary-btn delete-btn mb-3" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Delete</a>
+                
+                <a class="primary-btn delete-btn mb-2" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Remove</a>
             </div>
         </div>
         </form>
@@ -139,9 +140,12 @@ $result = mysqli_query($con,$query);
                         <div>Total:</div>
                         <div class="price" id="total">₹<?php echo $final_total; ?></div>
                     </div>
+                    <form action="" method="post">
                     <div class="d-flex justify-content-center w-100 mt-3">
-                        <a class="btn-msg checkout-link" href="checkout.php">Proceed to checkout</a>
+                        <!-- <a class="btn-msg checkout-link" href="checkout.php">Proceed to checkout</a> -->
+                        <input type="submit" class="btn-msg checkout-link text-nowrap" name="checkout" value="Proceed to checkout" />
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -150,125 +154,101 @@ $result = mysqli_query($con,$query);
 
 
 function record_exists($user_id, $product_id, $con)
-    {
-        $query = "select * from cart_details_tbl where User_Id=$user_id and Product_Id=$product_id";
-        $result = mysqli_query($con, $query);
-        return mysqli_num_rows($result)>0;
-    }
+{
+    $query = "select * from cart_details_tbl where User_Id=$user_id and Product_Id=$product_id";
+    $result = mysqli_query($con, $query);
+    return mysqli_num_rows($result) > 0;
+}
+function is_first_order($con)
+{
+    $user_id = $_SESSION["user_id"];
+    $query = "select count(*) from order_header_tbl where User_Id = $user_id";
+    $result = mysqli_query($con, $query);
+    $order_count_array = mysqli_fetch_array($result);
+    $order_count = $order_count_array[0];
+    return $order_count < 1;
+}
+if (isset($_SESSION['checkout_initiated']) && $_SESSION['checkout_initiated'] === true) {
+    // Unset specific session variables
+    unset($_SESSION['total-pay']);
+    unset($_SESSION['discount_amount']);
+    unset($_SESSION['new_total']);
+    unset($_SESSION['checkout_initiated']);  // Optional: Reset this flag
+}
 
+if (isset($_POST['apply'])) {
 
-
-    if (isset($_POST['apply'])) {
-
-        $offer = strtoupper($_POST['offer_code']);
-        $query = "SELECT `Offer_Id`, `Offer_Code`, `Offer_Description`, `Discount`, `Max_Discount`, `Minimum_Order`, `offer_type`, `active_status`, `Start_Date`, `End_Date` 
+    $offer = strtoupper($_POST['offer_code']);
+    $_SESSION['offer_code'] = $offer;
+    $query = "SELECT `Offer_Id`, `Offer_Code`, `Offer_Description`, `Discount`, `Max_Discount`, `Minimum_Order`, `active_status`, `Start_Date`, `End_Date` 
                   FROM `offer_details_tbl` 
                   WHERE Offer_Code='$offer' AND active_status=1";
-        $result = mysqli_query($con, $query);
-    
-        if (mysqli_num_rows($result) > 0) {
-            date_default_timezone_set('Asia/Kolkata');
-            $offer_data = mysqli_fetch_assoc($result);
-            $discount_percentage = $offer_data['Discount'];
-            $max_discount = $offer_data['Max_Discount'];
-            $order_total = $offer_data['Minimum_Order'];
-            $offer_type = $offer_data['offer_type'];
-            $start_date = strtotime($offer_data['Start_Date']); // Convert to Unix timestamp
-            $end_date = strtotime($offer_data['End_Date']);     // Convert to Unix timestamp
-            $current_date = time();     
-    
-            if (!($current_date > $start_date && $current_date < $end_date)) {
-                // Offer not valid on the current date
-                ?>
+    $result = mysqli_query($con, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        date_default_timezone_set('Asia/Kolkata');
+        $offer_data = mysqli_fetch_assoc($result);
+        $discount_percentage = $offer_data['Discount'];
+        $max_discount = $offer_data['Max_Discount'];
+        $order_total = $offer_data['Minimum_Order'];
+        $start_date = strtotime($offer_data['Start_Date']); // Convert to Unix timestamp
+        $end_date = strtotime($offer_data['End_Date']);     // Convert to Unix timestamp
+        $current_date = time();
+
+        if (!($current_date > $start_date && $current_date < $end_date)) {
+            // Offer not valid on the current date
+?>
+            <script>
+                document.getElementById('err').style.color = "red";
+                document.getElementById('err').innerHTML = "This offer is not available at the moment.";
+            </script>
+            <?php
+        } else {
+            if ($total >= $order_total) {
+                $discount_amount = min(($total * $discount_percentage) / 100, $max_discount);
+                $_SESSION['discount_amount'] = $discount_amount;  // Store discount in session
+                $_SESSION['new_total'] = $total - $discount_amount;
+                $_SESSION['total-pay'] = [
+                    'total' => $total - $discount_amount
+                ];
+                $new_total = $total - $discount_amount;
+            ?>
                 <script>
-                    document.getElementById('err').style.color = "red";
-                    document.getElementById('err').innerHTML = "This offer is not available at the moment.";
-                </script>
-                <?php
-            } else {
-                if ($offer_type == 1) {
-                    // Regular discount calculation based on Minimum_Order
-                    if ($total >= $order_total) {
-                        $discount_amount = ($total * $discount_percentage) / 100;
-                        if ($discount_amount > $max_discount) {
-                            $discount_amount = $max_discount;
-                        }
-                        $new_total = $total - $discount_amount;
-                        ?>
-                        <script>
-                            document.getElementById('discount-section').innerHTML = `
+                    document.getElementById('discount-section').innerHTML = `
                             <div class="my-2 line"></div>
                             <div class="d-flex align-items-center p-2">
                                 <div>Discount:</div>
                                 <div class="price">-₹<?php echo $discount_amount; ?></div>
                             </div>`;
-                            document.getElementById('total').innerHTML = `₹<?php echo $new_total + $shipping_charge; ?>`;
-                            document.getElementById('err').style.color = "green";
-                            document.getElementById('err').innerHTML = "Offer code applied successfully";
-                        </script>
-                        <?php
-                    } else {
-                        ?>
-                        <script>
-                            document.getElementById('err').style.color = "red";
-                            document.getElementById('err').innerHTML = "To avail this offer, the cart total must be greater than ₹<?php echo $order_total; ?>.";
-                        </script>
-                        <?php
-                    }
-                } elseif ($offer_type == 2) {
-                    // Apply discount directly
-                    $discount_amount = ($total * $discount_percentage) / 100;
-                    if ($discount_amount > $max_discount) {
-                        $discount_amount = $max_discount;
-                    }
-                    $new_total = $total - $discount_amount;
-                    ?>
-                    <script>
-                        document.getElementById('discount-section').innerHTML = `
-                        <div class="my-2 line"></div>
-                        <div class="d-flex align-items-center p-2">
-                            <div>Discount:</div>
-                            <div class="price">-₹<?php echo $discount_amount; ?></div>
-                        </div>`;
-                        document.getElementById('total').innerHTML = `₹<?php echo $new_total + $shipping_charge; ?>`;
-                        document.getElementById('err').style.color = "green";
-                        document.getElementById('err').innerHTML = "Offer code applied successfully";
-                    </script>
-                    <?php
-                } elseif ($offer_type == 3) {
-                    // Apply shipping charge as discount
-                    $discount_amount = $shipping_charge;
-                    $new_total = $total - $discount_amount;
-                    ?>
-                    <script>
-                        document.getElementById('discount-section').innerHTML = `
-                        <div class="my-2 line"></div>
-                        <div class="d-flex align-items-center p-2">
-                            <div>Shipping Discount:</div>
-                            <div class="price">-₹<?php echo $discount_amount; ?></div>
-                        </div>`;
-                        document.getElementById('total').innerHTML = `₹<?php echo $new_total + $shipping_charge - $discount_amount; ?>`;
-                        document.getElementById('err').style.color = "green";
-                        document.getElementById('err').innerHTML = "Offer code applied successfully";
-                    </script>
-                    <?php
-                }
-                $_SESSION["discount_amount"] = $discount_amount;
-                $_SESSION["subtotal"] = $total;
-                $_SESSION["total"] = $total + $shipping_charge - $discount_amount;
-                $_SESSION["shipping_charge"] = $shipping_charge;
-
-
-            }
-        } else {
-            // Offer code does not exist
-            ?>
-            <script>
-                document.getElementById('err').style.color = "red";
-                document.getElementById('err').innerHTML = "Invalid Code";
-            </script>
+                    document.getElementById('total').innerHTML = `₹<?php echo $_SESSION['new_total'] + $shipping_charge; ?>`;
+                    document.getElementById('err').style.color = "green";
+                    document.getElementById('err').innerHTML = "Offer code applied successfully";
+                </script>
             <?php
+            } else {
+            ?>
+                <script>
+                    document.getElementById('err').style.color = "red";
+                    document.getElementById('err').innerHTML = "To avail this offer, the cart total must be greater than ₹<?php echo $order_total; ?>.";
+                </script>
+<?php
+            }
         }
     }
+}
+if (isset($_POST['checkout'])) {
+    $_SESSION['total-pay'] = [
+        'discount_amount' => $discount_amount,
+        'subtotal' => $total,
+        'total' => $total + $shipping_charge - $discount_amount,
+        'shipping_charge' => $shipping_charge
+    ];
+    // $_SESSION["discount_amount"] = $discount_amount;
+    // $_SESSION["subtotal"] = $total;
+    // $_SESSION["total"] = $total + $shipping_charge - $discount_amount;
+    // $_SESSION["shipping_charge"] = $shipping_charge;
+    echo "<script>
+    location.href='checkout2.php';</script>";
+}
 
 ?>

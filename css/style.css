@@ -669,6 +669,10 @@ input[type="submit"], button {
     transition: transform 0.3s ease;
 }
 
+.product-image:hover .like{
+    color: white;
+}
+
 .product-image:hover button, .product-image:hover .like,.product-image:hover{
     opacity: 1;
     cursor: pointer;  

@@ -5,7 +5,7 @@
 //         window.location.href = 'Admin';
 //     </script>";
 // } 
-error_reporting(0);
+//error_reporting(0);
 $backtrace = debug_backtrace();
 $caller_file = basename($backtrace[0]['file']);
 
