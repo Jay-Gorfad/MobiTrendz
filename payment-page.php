@@ -3,16 +3,24 @@ require 'vendor/autoload.php';
 
 use Razorpay\Api\Api;
 
-// Include any necessary authentication or session management
 include_once("header.php");
-//include_once("user_authentication.php");
-
-// Check if the form was submitted
+include_once("user_authentication.php");
 
 $q = "select * from user_details_tbl where User_Id='$_SESSION[user_id]'";
 $userData = mysqli_fetch_assoc(mysqli_query($con, $q));
 
-$total = isset($_SESSION['total-pay']['total']) ? $_SESSION['total-pay']['total']-$_SESSION['discount_amount'] : 0;
+$sql = "select * from address_details_tbl where Address_Id='$_SESSION[addId]'";
+$address = mysqli_fetch_assoc(mysqli_query($con, $sql));
+$addressParts = explode(',', $address['Address']);
+$formattedAddress = implode(',' . PHP_EOL, $addressParts);
+$fullAddress = $address['Full_Name'] . ',' . PHP_EOL .
+    $address['Phone'] . ',' . PHP_EOL .
+    $formattedAddress . ',' . PHP_EOL .
+    $address['City'] . ',' . PHP_EOL .
+    $address['State'] . ' - ' . $address['Pincode'];
+$_SESSION['fullAddress'] = $fullAddress;
+
+$total = isset($_SESSION['total-pay']['total']) ? $_SESSION['total-pay']['total'] : 0;
 
 if ($total <= 0) {
     echo "Invalid total price. Please check your cart.";
@@ -22,12 +30,11 @@ if ($total <= 0) {
 $api = new Razorpay\Api\Api('rzp_test_yCgrsfXSuM7SxL', 'eaxt0pkgow03xe2s2ufGFmBK');
 
 try {
-    // Create a Razorpay order
     $orderData = [
         'receipt' => 'order_rcptid_' . uniqid(),
-        'amount' => $total * 100,  // Amount in paise
+        'amount' => $total * 100,
         'currency' => 'INR',
-        'payment_capture' => 1  // Auto capture the payment after the transaction
+        'payment_capture' => 1
     ];
 
     $razorpayOrder = $api->order->create($orderData);
@@ -42,7 +49,7 @@ try {
     <div class="container">
         <div class="row text-center">
             <div class="col-12 p-2 align-center">
-                <h1>Paying to MobiTrendz</h1>
+                <h1>Paying to PureBite</h1>
             </div>
         </div>
         <br>
@@ -50,24 +57,17 @@ try {
             <div class="col-3"></div>
             <div class="col-6">
                 <form method="POST">
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label for="address"><b>Delivery Address</b></label>
                     </div>
-                    <textarea class="form-control" id="address" name="address" rows="4" readonly><?php //echo htmlspecialchars($delivery_address); 
-                                                                                                    ?>
-                </textarea>
-                    
-                    <br> -->
+                    <textarea class="form-control" id="address" name="address" rows="7" readonly><?php echo $fullAddress; ?></textarea>
+
+                    <br>
                     <div class="form-group">
                         <label for="total"><b>Net Payable Amount</b></label>
                         <input type="text" class="form-control" value="<?php echo $total; ?>" disabled>
                     </div>
                     <br>
-                    <!-- <div class="form-group">
-                        <label for="order_id"><b>Order ID</b></label>
-                        <input type="text" class="form-control" value="<?php //echo $order_id; 
-                                                                        ?>" disabled>
-                    </div> -->
                     <div class="form-group">
                         <label for="order_id"><b>Order ID</b></label>
                         <input type="text" class="form-control" readonly
@@ -78,49 +78,6 @@ try {
                         <input type="submit" value="Pay Now" id="rzp-button" class="btn-msg mt-2">
                     </div>
                     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-                    <!-- <script>
-                        var options = {
-                            "key": "<?php //echo $api_key; 
-                                    ?>", // Enter the API key here
-                            "amount": "<?php //echo $total * 100; 
-                                        ?>", // Amount in paise
-                            "currency": "INR",
-                            "name": "PureBite Grocery",
-                            "description": "Online Transaction",
-                            "image": "img/favicon.jpg",
-                            "order_id": "<?php //echo $order_id; 
-                                            ?>", // Razorpay Order ID
-                            "prefill": {
-                                "name": "PureBite Grocery",
-                                "email": "purebitegroceryshop@gmail.com",
-                                "contact": "9925323126"
-                            },
-                            "theme": {
-                                "color": "#3BB77E"
-                            },
-                            "handler": function(response) {
-                                $.post("after-pay.php", {
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_signature: response.razorpay_signature
-                                }, function(data) {
-                                    if (data === "success") {
-                                        // Redirect to user order page
-                                        window.location.href = "order-history.php";
-                                    } else {
-                                        alert("Payment verification failed. Please contact support.");
-                                    }
-                                });
-                            }
-                        };
-
-                        var rzp = new Razorpay(options);
-                        document.getElementById('rzp-button').onclick = function(e) {
-                            rzp.open();
-                            e.preventDefault();
-                        };
-                    </script> -->
-
                     <script>
                         // Attach event to the Pay Now button
                         $('#rzp-button').click(function(e) {
@@ -133,7 +90,6 @@ try {
                                 alert('Order ID not generated.');
                                 return;
                             }
-
                             var options = {
                                 "key": razorpay_key_id,
                                 "amount": <?php echo $_SESSION['total-pay']['total'] * 100; ?>, // Amount in paise
@@ -144,16 +100,11 @@ try {
                                 //"image": "img/favicon.jpg", // Logo for your business
                                 "handler": function(response) {
                                     console.log(response);
-                                    // If payment is successful
                                     alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-
-                                    // Redirect to the server-side script for order processing
                                     var redirect_url = "process-order.php?payment_id=" + response.razorpay_payment_id +
                                         "&order_id=" + response.razorpay_order_id +
-                                        "&total_amount=" + <?php echo ($_SESSION['total-pay']['total']-$_SESSION["discount_amount"]) * 100; ?> +
+                                        "&total_amount=" + <?php echo $_SESSION['total-pay']['total'] * 100; ?> +
                                         "&uid=<?php echo $_SESSION['user_id']; ?>";
-
-                                    // Redirect to the order processing page
                                     window.location.href = redirect_url;
                                 },
                                 "modal": {
@@ -165,15 +116,14 @@ try {
                                     alert("Payment Failed: " + error.error.description);
                                 },
                                 "prefill": {
-                                    "name": "", // Prefill customer's name (can fetch from session or database)
-                                    "email": "<?php echo $_SESSION['Email']; ?>", // Prefill customer's email (can fetch from session)
-                                    "contact": "Customer Contact" // Prefill customer's contact number
+                                    "name": "<?php echo $userData['Name']; ?>", // Prefill customer's name (can fetch from session or database)
+                                    "email": "<?php echo $userData['Email']; ?>", // Prefill customer's email (can fetch from session)
+                                    "contact": "<?php echo $userData['Mobile_No']; ?>" // Prefill customer's contact number
                                 },
                                 "theme": {
                                     "color": "#3BB77E"
                                 }
                             };
-
                             var rzp1 = new Razorpay(options);
                             rzp1.open();
                         });

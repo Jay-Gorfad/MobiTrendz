@@ -7,7 +7,7 @@
     if (mysqli_query($con, $query)) {
         $query = "delete from wishlist_details_tbl where Product_Id=$product_id and User_Id=$user_id";
         if(mysqli_query($con,$query)){
-            echo "<script>location.replace('../cart.php');</script>";
+            echo "<script>location.replace('cart.php');</script>";
             setcookie("success","Product moved to cart successfully!",time()+5,"/");
         }  
     } 

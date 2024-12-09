@@ -4,7 +4,7 @@
     $user_id = $_SESSION["user_id"];
     $query = "delete from wishlist_details_tbl where Product_Id=$product_id and User_Id=$user_id";
     if(mysqli_query($con,$query)){
-        echo "<script>location.href = '../wishlist.php'</script>";
+        echo "<script>location.href = 'wishlist.php'</script>";
         exit;
     }
     else{

@@ -108,7 +108,8 @@ $total_banners = mysqli_num_rows($result);
                             <a href="product-details.php?product_id=<?php echo $product["Product_Id"]?>">
                             <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Product Image">
                             </a>
-                            <div class="like"><i class="fa-regular fa-heart"></i></div>
+                            <a href="wishlist.php?product_id=<?php echo $product["Product_Id"]?>">
+                            <div class="like"><i class="fa-regular fa-heart"></i></div></a>
                         </div>
                     
                     <div class="card-body product-body px-3 ">
