@@ -7,7 +7,7 @@
     --primary:#0D4FCF;
     --delete: #d9534f; 
     --form-label: #6c757d; 
-    --secondary: #f8d7da; 
+    --secondary: #6e9bc5; 
     --discount: #00cc66; 
     --hover:#FDD330;
     
@@ -66,6 +66,19 @@ input[type="checkbox"]:checked {
 
 .footer .nav-link{
     color: var(--primary);
+}
+
+.address-box.selected {
+    background-color: #6e9bc5;
+    color:#161515; /* Light background for selected state */
+    border: 2px solid #6e9bc5; /* Border color for selected state */
+    box-shadow: 0px 0px 10px #6e9bc5; /* Optional: Shadow effect */
+}
+
+.disabled-card {
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(10%);
 }
 .btns{
     background-color: var(--primary);

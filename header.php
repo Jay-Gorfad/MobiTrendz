@@ -52,6 +52,7 @@ $wishlisttotal = mysqli_fetch_assoc($result);
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <?php
@@ -84,7 +85,7 @@ if (isset($_SESSION['user_id'])) { ?>
                         <a class="nav-link  <?php echo $title=="About"?"active":"";?>" href="about.php">About</a>
                     </li>
                     <!-- <li class="nav-item">
-                        <a class="nav-link  <?php echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
+                        <a class="nav-link  <?php //echo $title=="Orders"?"active":"";?>" href="order-history.php">Orders</a>
                     </li> -->
                 </ul>
                 

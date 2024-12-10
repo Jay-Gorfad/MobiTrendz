@@ -1,157 +1,136 @@
-<?php include('header.php');
+<?php include 'header.php';
 $user_id = $_SESSION['user_id'];
-if (isset($_GET['product_id'])) 
-{
-    if (isset($_SESSION['user_id'])) 
-    {
+if (isset($_GET['product_id'])) {
+    if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
-    } 
-    else 
-    {
+    } else {
         echo "<script>location.href='login.php';</script>";
         exit;
     }
     $product_id = $_GET['product_id'];
-    $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : 1;  
-    if(record_exists($user_id, $product_id, $con))
-    {
+    $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : 1;
+    if (record_exists($user_id, $product_id, $con)) {
         $query = "update cart_details_tbl set quantity = quantity+1 where Product_Id = '$product_id' and User_Id = '$user_id'";
-        mysqli_query($con,$query);
-    }
-    else
-    {
-        $query = "INSERT INTO cart_details_tbl(Product_Id, Quantity, User_Id) VALUES ('$product_id', '$quantity', '$user_id')"; 
+        mysqli_query($con, $query);
+    } else {
+        $query = "INSERT INTO cart_details_tbl(Product_Id, Quantity, User_Id) VALUES ('$product_id', '$quantity', '$user_id')";
         if (mysqli_query($con, $query)) {
             setcookie('success', "Product added to cart successfully!", time() + 5, "/");
             echo "<script>
             location.replace('cart.php');</script>";
             exit;
-        } 
-        else 
-        {
+        } else {
             echo "Error: " . mysqli_error($con);
         }
-    }   
+    }
 }
-$query = "select p.Product_Name,c.Product_Id, p.Product_Image, round(p.Sale_Price-p.Sale_Price*p.Discount/100,2) as 'Price',round((p.Sale_Price-p.Sale_Price*p.Discount/100)*c.Quantity,2) as 'Subtotal',c.Quantity from cart_details_tbl as c left join product_details_tbl as p on c.Product_Id = p.Product_Id where User_Id = ".$user_id;
-$result = mysqli_query($con,$query);
+$query = "select p.Product_Name,c.Product_Id, p.Product_Image, round(p.Sale_Price-p.Sale_Price*p.Discount/100,2) as 'Price',round((p.Sale_Price-p.Sale_Price*p.Discount/100)*c.Quantity,2) as 'Subtotal',c.Quantity from cart_details_tbl as c left join product_details_tbl as p on c.Product_Id = p.Product_Id where User_Id = " . $user_id;
+$result = mysqli_query($con, $query);
+
 ?>
-    <div class="container sitemap cart-table">
-        <p class="my-5"><a href="index.php" class="text-decoration-none dim link">Home /</a> Cart</p>
-        <?php
-            $total=0;
-            if(mysqli_num_rows($result) > 0){
-                ?>
-                <!-- <form action="update-cart.php" method="post"> -->
-        <!-- table start -->
-        
-        <div class="row font-bold bg-light">
-            <div class="col-2">
-                Product Image
-            </div>
-            <div class="col-2">
-                Product Name
-            </div>
-            <div class="col-2 text-center">Price</div>
-            <div class="col-2 ">
-                Quantity
-            </div>
-            <div class="col-2 text-center">Subtotal</div>
-            <div class="col-2 text-center">Actions</div>
-        </div>
-            
-        <?php
-                while($product = mysqli_fetch_assoc($result)){
-                    $total += $product['Subtotal'];
-                    ?>
-        <form action="update-cart.php" method="post">
-        <div class="row mb-2">
-            <div class="col-2">
-                <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" style="width: 50px; height: 50px; object-fit: cover;">
-            </div>
-            <div class="col-2">
-                <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>
-            </div>
-            <div class="col-2 d-inline-block text-center">₹<?php echo $product["Price"]; ?></div>
-            <div class="col-2 ">
-                <div class="d-flex  qty-mod">
-
-                    <button class="number-button qty-minus">-</button>
-                    <input type="number" name="quantity" id="" value="<?php echo $product["Quantity"]; ?>">
-                    <button class="number-button qty-plus">+</button>
-                    <input type="hidden" class="qty" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
-                </div>
-            </div>
-            <div class="col-2 text-center">₹<?php echo $product["Subtotal"]; ?></div>
-            <div class="col-2 d-flex justify-content-center align-items-center">
-                
-                
-                <a class="primary-btn delete-btn mb-2" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Remove</a>
-            </div>
-        </div>
-        </form>
-        <?php
-                        }
-            }
-            else{
-                echo "There is no record to display!";
-            }
-            ?>
-    </div>
-
+<div class="container sitemap cart-table">
+    <p class="my-5"><a href="index.php" class="text-decoration-none dim link">Home /</a> Cart</p>
     <?php
-
-    $shipping_charge = 50;
-    $final_total = $total + $shipping_charge;            
+    $total = 0;
+    if (mysqli_num_rows($result) > 0) {
 
     ?>
-    <div class="container mb-5">
-        <div class="d-flex justify-content-between align-items-center cart-page mb-5">
-            <a class="btn-msg" href="shop.php">Return to shop</a>
-            <!-- <button class="btn-msg">Update Cart</button> -->
-            <div class="flex flex-col">
+        <table class="table  text-nowrap">
+            <tr class="heading">
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Actions</th>
+            </tr>
+            <?php
+            while ($product = mysqli_fetch_assoc($result)) {
+                $total += $product['Subtotal'];
+            ?>
+                <tr>
+                    <form action="update-cart.php" method="post">
+                        <td class="text-start">
+                            <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" class="image-item d-inline-block">
+                            <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>
+                        </td>
+                        <td>₹<?php echo $product["Price"]; ?></td>
+                        <td>
+                            <div class="d-flex justify-content-center qty-mod">
+                                <button class="number-button qty-minus">-</button>
+                                <input type="number" name="quantity" id="" value="<?php echo $product["Quantity"]; ?>">
+                                <button class="number-button qty-plus">+</button>
+                                <input type="hidden" name="product_id" value="<?php echo $product["Product_Id"]; ?>">
+                            </div>
+                        </td>
+                        <td>₹<?php echo $product["Subtotal"]; ?></td>
+                        <td>
+                            <a class="primary-btn delete-btn" href="remove-from-cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Remove</a>
+                        </td>
+                    </form>
+                </tr>
+        <?php
+            }
+        } else {
+            echo "There is no record to display!";
+        }
+        ?>
+
+
+
+        </table>
+</div>
+<?php
+$shipping_charge = 50;
+$final_total = $total + $shipping_charge;
+?>
+<div class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center cart-page mb-5">
+        <a class="btn-msg px-sm-4 py-sm-2 px-2 py-1 mt-2" href="shop.php">Return to shop</a>
+        <div class="flex flex-col">
             <div class="d-flex justify-content-end align-items-center not-hidden">
-                <form class="d-flex justify-content-end" action="cart.php" method="post" onsubmit="return validateOfferCode();">
-                <input class="search-input" type="search" placeholder="Add offer code" size="25" name="offer_code" id="offerCodeText" value="<?php echo $_POST['offer_code']; ?>">
+                <form class="d-flex justify-content-end" action="cart.php" method="post" onsubmit=" return validateOfferCode();">
+                    <input class=" search-input" type="search" placeholder="Add offer code" size="25" name="offer_code" id="offerCodeText" value="<?php echo $_POST['offer_code']; ?>">
                     <button class="primary-btn" type="submit" name="apply">Apply</button>
                 </form>
             </div>
             <div id="err"></div>
         </div>
-        </div>
-        <div class="row justify-content-end">
-            <div class="col-md-5">
-                <div class="border p-4">
+
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-md-5 col-sm-7">
+            <div class="bold-border p-4">
+                <form action="cart.php" method="post">
                     <h5 class="mb-3">Cart Total</h5>
                     <div class="d-flex align-items-center p-2">
                         <div>Subtotal:</div>
                         <div class="price">₹<?php echo $total; ?></div>
+                        <input type="hidden" name="sub" value="<?php echo $total; ?>" />
                     </div>
-                    <div class="my-2 border"></div>
+                    <div class="my-2 line"></div>
                     <div class="d-flex align-items-center p-2">
                         <div>Shipping:</div>
                         <div class="price">₹<?php echo $shipping_charge; ?></div>
+                        <input type="hidden" name="ship" value="<?php echo $shipping_charge; ?>" />
                     </div>
                     <div id="discount-section">
 
                     </div>
-                    <div class="my-2 border"></div>
+                    <div class="my-2 line"></div>
                     <div class="d-flex align-items-center p-2">
                         <div>Total:</div>
                         <div class="price" id="total">₹<?php echo $final_total; ?></div>
+                        <input type="hidden" name="grand-total" id="gt" value="<?php echo $final_total; ?>" />
                     </div>
-                    <form action="" method="post">
                     <div class="d-flex justify-content-center w-100 mt-3">
-                        <!-- <a class="btn-msg checkout-link" href="checkout.php">Proceed to checkout</a> -->
                         <input type="submit" class="btn-msg checkout-link text-nowrap" name="checkout" value="Proceed to checkout" />
                     </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 <?php include('footer.php');
-
 
 function record_exists($user_id, $product_id, $con)
 {
@@ -169,11 +148,8 @@ function is_first_order($con)
     return $order_count < 1;
 }
 if (isset($_SESSION['checkout_initiated']) && $_SESSION['checkout_initiated'] === true) {
-    // Unset specific session variables
     unset($_SESSION['total-pay']);
-    unset($_SESSION['discount_amount']);
-    unset($_SESSION['new_total']);
-    unset($_SESSION['checkout_initiated']);  // Optional: Reset this flag
+    unset($_SESSION['checkout_initiated']);
 }
 
 if (isset($_POST['apply'])) {
@@ -191,12 +167,12 @@ if (isset($_POST['apply'])) {
         $discount_percentage = $offer_data['Discount'];
         $max_discount = $offer_data['Max_Discount'];
         $order_total = $offer_data['Minimum_Order'];
-        $start_date = strtotime($offer_data['Start_Date']); // Convert to Unix timestamp
-        $end_date = strtotime($offer_data['End_Date']);     // Convert to Unix timestamp
+        $start_date = strtotime($offer_data['Start_Date']);
+        $end_date = strtotime($offer_data['End_Date']);
         $current_date = time();
 
         if (!($current_date > $start_date && $current_date < $end_date)) {
-            // Offer not valid on the current date
+
 ?>
             <script>
                 document.getElementById('err').style.color = "red";
@@ -205,12 +181,7 @@ if (isset($_POST['apply'])) {
             <?php
         } else {
             if ($total >= $order_total) {
-                $discount_amount = min(($total * $discount_percentage) / 100, $max_discount);
-                $_SESSION['discount_amount'] = $discount_amount;  // Store discount in session
-                $_SESSION['new_total'] = $total - $discount_amount;
-                $_SESSION['total-pay'] = [
-                    'total' => $total - $discount_amount
-                ];
+                $discount_amount = min(($total * $discount_percentage) / 100, $max_discount);  // Store discount in session
                 $new_total = $total - $discount_amount;
             ?>
                 <script>
@@ -219,8 +190,10 @@ if (isset($_POST['apply'])) {
                             <div class="d-flex align-items-center p-2">
                                 <div>Discount:</div>
                                 <div class="price">-₹<?php echo $discount_amount; ?></div>
+                                <input type="hidden" name="discount" value="<?php echo $discount_amount; ?>" />
                             </div>`;
-                    document.getElementById('total').innerHTML = `₹<?php echo $_SESSION['new_total'] + $shipping_charge; ?>`;
+                    document.getElementById('total').innerHTML = `₹<?php echo $new_total + $shipping_charge; ?>`;
+                    document.getElementById('gt').value = `<?php echo $new_total + $shipping_charge; ?>`;
                     document.getElementById('err').style.color = "green";
                     document.getElementById('err').innerHTML = "Offer code applied successfully";
                 </script>
@@ -236,19 +209,25 @@ if (isset($_POST['apply'])) {
         }
     }
 }
-if (isset($_POST['checkout'])) {
-    $_SESSION['total-pay'] = [
-        'discount_amount' => $discount_amount,
-        'subtotal' => $total,
-        'total' => $total + $shipping_charge - $discount_amount,
-        'shipping_charge' => $shipping_charge
-    ];
-    // $_SESSION["discount_amount"] = $discount_amount;
-    // $_SESSION["subtotal"] = $total;
-    // $_SESSION["total"] = $total + $shipping_charge - $discount_amount;
-    // $_SESSION["shipping_charge"] = $shipping_charge;
-    echo "<script>
-    location.href='checkout2.php';</script>";
-}
 
-?>
+if (isset($_POST['checkout'])) {
+    $user_id = $_SESSION["user_id"];
+    $sql = "select * from cart_details_tbl where User_Id='$user_id'";
+    $cart = mysqli_query($con, $sql);
+    if (mysqli_num_rows($cart) > 0) {
+        $subTotal = $_POST['sub'];
+        $shipping = $_POST['ship'];
+        $discount = $_POST['discount'];
+        $grandTotal = $_POST['grand-total'];
+        $_SESSION['total-pay'] = [
+            'discount_amount' => $discount,
+            'subtotal' => $subTotal,
+            'total' => $grandTotal,
+            'shipping_charge' => $shipping
+        ];
+        echo "<script>location.href='checkout.php';</script>";
+    } else {
+        echo "<script>alert('Cart is Empty')</script>";
+        echo "<script>location.href='shop.php';</script>";
+    }
+}
