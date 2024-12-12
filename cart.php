@@ -50,7 +50,7 @@ $result = mysqli_query($con, $query);
                 <tr>
                     <form action="update-cart.php" method="post">
                         <td class="text-start">
-                            <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" class="image-item d-inline-block">
+                            <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="<?php echo $product["Product_Name"]; ?>" class="image-item d-inline-block" style="width: 50px; height: 60px; object-fit: cover;">
                             <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>
                         </td>
                         <td>₹<?php echo $product["Price"]; ?></td>

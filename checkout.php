@@ -20,7 +20,7 @@ $result = mysqli_query($con, $query);
                     <div class="d-flex justify-content-between align-content-center mb-3">
                         <h2 class="mt-2">Billing Details</h2>
                         <div class="d-flex justify-content-end">
-                            <button type="button" id="add-new-address" onclick="showHideForm()" class="btn btn-success mt-2">Add New Address</button>
+                            <button type="button" id="add-new-address" onclick="showHideForm()" class="btn-msg mt-2">Add New Address</button>
                         </div>
                     </div>
                     <div class="row gx-2 gy-3">
@@ -76,7 +76,7 @@ $result = mysqli_query($con, $query);
                         <div class="d-flex justify-content-between align-content-center mb-3">
                             <h5 class="mt-2">Select Shipping Address</h5>
                             <div class="d-flex justify-content-end">
-                                <button type="button" id="add-new-address" onclick="showHideForm()" class="btn btn-success mt-2">Add New Address</button>
+                                <button type="button" id="add-new-address" onclick="showHideForm()" class="btn-msg mt-2">Add New Address</button>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap">

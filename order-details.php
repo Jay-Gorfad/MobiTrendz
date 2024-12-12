@@ -106,7 +106,7 @@ $order = mysqli_fetch_assoc($result);
         <?php while ($product = mysqli_fetch_assoc($result)) { ?>
             <div class="row m-0 border-bottom">
                 <div class="col-4 p-0">
-                    <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Chocolate image" class="image-item d-inline-block">
+                    <img src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Chocolate image" class="image-item d-inline-block" style="width: 50px; height: 60px; object-fit: cover;">
                     <div class="d-inline-block"><?php echo $product["Product_Name"]; ?></div>
                 </div>
                 <div class="col-2 text-center"><?php echo $product["Quantity"]; ?></div>
