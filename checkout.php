@@ -27,17 +27,17 @@ $result = mysqli_query($con, $query);
                         <div class="col-12 col-sm-6">
                             <label for="billingFirstName" class="form-label d-block">First Name<span class="required">*</span></label>
                             <input name="billingFirstName" type="text" id="billingFirstName" class="w-100" placeholder="First Name">
-                            <p id="billingFirstNameError" class="error"></p>
+                            <p id="billingFirstNameError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-6">
                             <label for="billingLastName" class="form-label d-block">Last Name<span class="required">*</span></label>
                             <input name="billingLastName" type="text" id="billingLastName" class="w-100" placeholder="Last Name">
-                            <p id="billingLastNameError" class="error"></p>
+                            <p id="billingLastNameError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-12">
                             <label for="billingAddress" class="form-label d-block">Street Address<span class="required">*</span></label>
                             <textarea name="billingAddress" id="billingAddress" class="w-100" rows="2" placeholder="Street Address"></textarea>
-                            <p id="billingAddressError" class="error"></p>
+                            <p id="billingAddressError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-12">
                             <label for="billingApartment" class="form-label d-block">Apartment, Floor, etc.(Optional)</label>
@@ -46,27 +46,27 @@ $result = mysqli_query($con, $query);
                         <div class="col-12 col-sm-6">
                             <label for="billingCity" class="form-label d-block">City<span class="required">*</span></label>
                             <input name="billingCity" type="text" id="billingCity" class="w-100" placeholder="City">
-                            <p id="billingCityError" class="error"></p>
+                            <p id="billingCityError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-6">
                             <label for="billingState" class="form-label d-block">State<span class="required">*</span></label>
                             <input name="billingState" type="text" id="billingState" class="w-100" placeholder="State">
-                            <p id="billingStateError" class="error"></p>
+                            <p id="billingStateError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-6">
                             <label for="billingPinCode" class="form-label d-block">Pin Code<span class="required">*</span></label>
                             <input name="billingPinCode" type="text" id="billingPinCode" class="w-100" placeholder="Pin Code">
-                            <p id="billingPinCodeError" class="error"></p>
+                            <p id="billingPinCodeError" class="text-danger"></p>
                         </div>
                         <div class="col-12 col-sm-6">
                             <label for="billingPhone" class="form-label d-block">Phone<span class="required">*</span></label>
                             <input name="billingPhone" type="text" id="billingPhone" class="w-100" placeholder="Phone Number">
-                            <p id="billingPhoneError" class="error"></p>
+                            <p id="billingPhoneError" class="text-danger"></p>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <input type="submit" value="Save Address" name="address" class="btn btn-success mt-2">
+                    <input type="submit" value="Save Address" name="address" class="btn-msg mt-2">
                 </div>
                 <div class="mt-4 line mb-4"></div>
             </form>
@@ -97,7 +97,7 @@ $result = mysqli_query($con, $query);
                                 </div>
                             <?php } ?>
                         </div>
-                        <div id="addressError" class="error"></div>
+                        <div id="addressError" class="text-danger"></div>
                 </div>
             </div>
         </div>
@@ -142,7 +142,7 @@ $result = mysqli_query($con, $query);
                 <div class="mb-1"><label><input type="radio" name="pay-mode" value="COD"> Cash On Delivery</label></div>
                 <div><label><input type="radio" name="pay-mode" value="Online"> Online</label></div>
             </div>
-            <div id="payModeError" class="error"></div>
+            <div id="payModeError" class="text-danger"></div>
             <div class="d-flex justify-content-end">
                 <input type="submit" value="Place Order" name="pay_now" class="btn-msg mt-2">
             </div>

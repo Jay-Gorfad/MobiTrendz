@@ -2,7 +2,42 @@
 
 $product_id = $_GET['product_id'];
 
-$query = "select product.`Product_Id`, product.`Category_Id`, product.`Product_Name`, product.`Description`, product.`Product_Image`, product.`Sale_Price`, product.`Cost_Price`, product.`Discount`, product.`stock` , round(avg(review.Rating)) 'Rating', round(Sale_Price-Sale_Price*Discount/100,2) 'Price',COUNT(o.Order_Id) 'Sold_Quantity' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id left join order_details_tbl as o on o.Product_Id = review.Product_Id group by Product_Id having Product_Id=$product_id";
+$query = "SELECT 
+    product.`Product_Id`, 
+    product.`Category_Id`, 
+    product.`Product_Name`, 
+    product.`Description`, 
+    product.`Product_Image`, 
+    product.`Sale_Price`, 
+    product.`Cost_Price`, 
+    product.`Discount`, 
+    product.`stock`, 
+    ROUND(AVG(review.Rating), 0) AS 'Rating', 
+    ROUND(product.Sale_Price - (product.Sale_Price * product.Discount / 100), 2) AS 'Price', 
+    COUNT(o.Order_Id) AS 'Sold_Quantity'
+FROM 
+    product_details_tbl AS product
+LEFT JOIN 
+    review_details_tbl AS review 
+    ON product.Product_Id = review.Product_Id
+LEFT JOIN 
+    order_details_tbl AS o 
+    ON product.Product_Id = o.Product_Id
+GROUP BY 
+    product.`Product_Id`, 
+    product.`Category_Id`, 
+    product.`Product_Name`, 
+    product.`Description`, 
+    product.`Product_Image`, 
+    product.`Sale_Price`, 
+    product.`Cost_Price`, 
+    product.`Discount`, 
+    product.`stock`
+HAVING 
+    product.`Product_Id` = $product_id;
+";
+
+#$query = "select product.`Product_Id`, product.`Category_Id`, product.`Product_Name`, product.`Description`, product.`Product_Image`, product.`Sale_Price`, product.`Cost_Price`, product.`Discount`, product.`stock` , round(avg(review.Rating)) 'Rating', round(Sale_Price-Sale_Price*Discount/100,2) 'Price',COUNT(o.Order_Id) 'Sold_Quantity' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id left join order_details_tbl as o on o.Product_Id = review.Product_Id group by Product_Id having Product_Id=$product_id";
 $result = mysqli_query($con,$query);
 $product = mysqli_fetch_assoc($result);
 

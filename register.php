@@ -21,19 +21,19 @@ use PHPMailer\PHPMailer\Exception;
                         <div class="mb-4 text-center">Enter your details below</div>
                         <form id="registrationForm" method="post" onsubmit="return validateRegistrationForm();">
                             <input type="text" id="name" name="regname" class="w-100 mb-3" placeholder="Name">
-                            <p id="nameError" class="error mb-2"></p>
+                            <p id="nameError" class="text-danger mb-2"></p>
 
                             <input type="text" id="email" name="regemail" class="w-100 mb-3" placeholder="Email">
-                            <p id="emailError" class="error mb-2"></p>
+                            <p id="emailError" class="text-danger mb-2"></p>
 
                             <input type="text" id="phone" name="regphone" class="w-100 mb-3" placeholder="Mobile number ">
-                            <p id="phoneError" class="error mb-2"></p>
+                            <p id="phoneError" class="text-danger mb-2"></p>
 
                             <input type="text" id="password" name="regpwd" class="w-100 mb-3" placeholder="Password">
-                            <p id="passwordError" class="error mb-2"></p>
+                            <p id="passwordError" class="text-danger mb-2"></p>
 
                             <input type="text" id="confirmPassword" name="regcpwd" class="w-100 mb-3" placeholder="Confirm Password">
-                            <p id="confirmPasswordError" class="error mb-2"></p>
+                            <p id="confirmPasswordError" class="text-danger mb-2"></p>
 
                             <input type="submit" value="Create an account" name="regbtn" class="btn-msg w-100">
                             <div class="mt-4 text-center">

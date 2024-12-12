@@ -15,7 +15,8 @@ if (isset($_POST['review_id']) && isset($_POST['reply'])) {
     if ($stmt->execute()) {
         echo "<script>
             alert('Reply added successfully.');
-            location.href='product-details.php?product_id=" . $_GET['product_id'] . "';
+            
+            location.href='reviews.php';
         </script>";
     } else {
         echo "<script>

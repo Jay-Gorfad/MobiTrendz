@@ -11,9 +11,9 @@
             <p class="mb-4 text-muted text-center">Enter your details below</p>
             <form id="loginForm" method="POST" onsubmit="return validateLoginForm();" action="verify-login.php">
                 <input type="text" id="loginEmail" name="logEmail" class="form-control mb-3" placeholder="Email">
-                <p id="loginEmailError" class="error mb-2"></p>
+                <p id="loginEmailError" class="text-danger"></p>
                 <input type="text" id="loginPassword" name="logPwd" class="form-control mb-3" placeholder="Password">
-                <p id="loginPasswordError" class="error mb-2"></p>
+                <p id="loginPasswordError" class="text-danger"></p>
                 <input type="submit" value="Log in" name="login" class="btn-msg w-100">
                 <!-- <button type="submit" class="btn btn-primary w-100 mb-2">Log in</button> -->
                 <div class="mt-4 text-center">

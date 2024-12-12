@@ -199,11 +199,11 @@ if(isset($_POST['add_review_btn']))
         $review = $_POST["review"];
         $user_id = isset($_SESSION["user_id"])?$_SESSION["user_id"]:'';
 
-        $query = "insert into review_details_tbl values('$product_id', $user_id, $rating, '$review',NOW())";
+        $query = "insert into review_details_tbl (Product_Id, User_Id, Rating, Review, Review_Date) values('$product_id', $user_id, $rating, '$review',NOW())";
         $sql = mysqli_query($con, $query);
 
         if($sql)
-            echo "<script>alert('Response added successfully!');
+            echo "<script>alert('Review added successfully!');
         location.href=location;
             </script>";
         else    

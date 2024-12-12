@@ -355,11 +355,13 @@ function validateEditAddressForm() {
 
 function contactFormValidation() {
     let contactName = document.getElementById('contactName');
+    let contactName2 = document.getElementById('contactName');
     let contactEmail = document.getElementById('contactEmail');
     let contactPhone = document.getElementById('contactPhone');
     let contactMessage = document.getElementById('contactMessage');
 
     let contactNameError = document.getElementById('contactNameError');
+    let contactNameError2 = document.getElementById('contactNameError');
     let contactEmailError = document.getElementById('contactEmailError');
     let contactPhoneError = document.getElementById('contactPhoneError');
     let contactMessageError = document.getElementById('contactMessageError');
@@ -367,13 +369,22 @@ function contactFormValidation() {
     let isValid = true;
 
     if (contactName.value.trim() === '') {
-        contactNameError.innerText = 'Name is required';
+        contactNameError.innerText = 'First Name is required';
         isValid = false;
     } else if (/\d/.test(contactName.value)) {
-        contactNameError.innerText = 'Name should not contain numbers';
+        contactNameError.innerText = 'First Name should not contain numbers';
         isValid = false;
     } else {
         contactNameError.innerText = '';
+    }
+    if (contactName2.value.trim() === '') {
+        contactName2Error.innerText = 'Last Name is required';
+        isValid = false;
+    } else if (/\d/.test(contactName2.value)) {
+        contactName2Error.innerText = 'Last Name should not contain numbers';
+        isValid = false;
+    } else {
+        contactName2Error.innerText = '';
     }
 
     if (contactEmail.value.trim() === '') {

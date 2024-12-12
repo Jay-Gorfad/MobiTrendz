@@ -1182,3 +1182,16 @@ input[type="submit"], button {
     opacity: 0;
     transition: opacity 0.3s ease;
 }
+
+.circle{
+    height: 100px;
+    width: 100px;
+    color:white;
+    background-color: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size:45px;
+    margin: 30px 0px;
+}

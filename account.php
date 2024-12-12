@@ -26,22 +26,22 @@ $lname=$fullname[1];
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">First Name</label>
                                     <input type="text" class="w-100" name="firstName" placeholder="Your First Name*" id="firstName" value="<?php echo $fname; ?>">
-                                    <p id="firstNameError" class="error"></p>
+                                    <p id="firstNameError" class="text-danger"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Last Name</label>
                                     <input type="text" class="w-100" name="lastName" placeholder="Your Last Name*" id="lastName" value="<?php echo $lname; ?>">
-                                    <p id="lastNameError" class="error"></p>
+                                    <p id="lastNameError" class="text-danger"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Email</label>
                                     <input type="text" class="w-100" name="uemail" placeholder="Your Email*" id="email" value="<?php echo $user['Email']; ?>" disabled>
-                                    <p id="emailError" class="error"></p>
+                                    <p id="emailError" class="text-danger"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="" class="form-label">Phone</label>
                                     <input type="text" class="w-100" name="uphone" placeholder="Your Phone*" id="phone" value="<?php echo $user['Mobile_No']; ?>" disabled>
-                                    <p id="phoneError" class="error"></p>
+                                    <p id="phoneError" class="text-danger"></p>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <img src="img/users/<?php echo $user["Profile_Picture"]; ?>" alt="" height="200" width="200">
@@ -62,11 +62,11 @@ $lname=$fullname[1];
                                 <div class="col-12">
                                     <label for="" class="form-label">Password</label>
                                     <input type="text" name="current" class="w-100 mb-2" placeholder="Current password" id="currentPassword">
-                                    <p id="currentPasswordError" class="error"></p>
+                                    <p id="currentPasswordError" class="text-danger"></p>
                                     <input type="text" class="w-100 mb-2" name="new" placeholder="New password" id="newPassword">
-                                    <p id="newPasswordError" class="error"></p>
+                                    <p id="newPasswordError" class="text-danger"></p>
                                     <input type="text" name="confirm" class="w-100 mb-2" placeholder="Confirm password" id="confirmPassword">
-                                    <p id="confirmPasswordError" class="error"></p>
+                                    <p id="confirmPasswordError" class="text-danger"></p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">

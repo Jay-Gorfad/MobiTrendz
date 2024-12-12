@@ -11,7 +11,7 @@
                         <div class="mb-4 text-center">Enter the OTP we sent you in email</div>
                         <form action="verify-otp.php" id="otpForm" method="post" onsubmit="return validateOtpForm();">
                             <input type="number" name="otp" id="otp" class="w-100 mb-3" placeholder="OTP">
-                            <p id="otpError" class="error  mb-2"></p>
+                            <p id="otpError" class="text-danger  mb-2"></p>
                             <input type="submit" value="Verify" name="verify" class="btn-msg w-100">
                             <!-- <div class="mt-4 text-center">
                                 <a href="login.php" class="dim link ms-2">Back to log in</a>
