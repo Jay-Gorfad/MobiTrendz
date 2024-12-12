@@ -134,7 +134,7 @@ $result = mysqli_query($con, $query);
             <div class="my-2 line"></div>
             <div class="d-flex align-items-center p-2">
                 <div>Total:</div>
-                <div class="price">₹<?php echo $_SESSION['total-pay']['total']; ?></div>    
+                <div class="price">₹<?php echo $_SESSION['total-pay']['total']; ?></div>
             </div>
             <div class="my-2 line"></div>
             <div class="p-2">
@@ -183,18 +183,19 @@ if (isset($_POST["pay_now"])) {
         echo "<script>
         location.href='payment-page.php';</script>";
     } else {
+
         $userId = $_SESSION['user_id'];
         $addId = $_POST['add'];
         $orderDate = date('Y-m-d H:i:s');
         $paymentMode = $_POST['pay-mode'];
-        $orderStatus = $paymentMode == 'COD' ? 'Pending' : '';
+        $orderStatus = "Pending";
         $shippingCharge = $_SESSION['total-pay']['shipping_charge'];
         $total_amount = $_SESSION['total-pay']['total'];
         $discount = $_SESSION['total-pay']['discount_amount'];
 
 
         $orderQuery = "INSERT INTO order_header_tbl 
-                   (User_Id, Order_Date, Order_Status,Del_Address_Id, Shipping_Charge, Total, Payment_Mode) 
+                   (User_Id, Order_Date, Order_Status,Shipping_Address_Id, Shipping_Charge, Total, Payment_Mode) 
                    VALUES ('$userId', '$orderDate', '$orderStatus', '$addId', '$shippingCharge', '$total_amount', '$paymentMode')";
 
         if (mysqli_query($con, $orderQuery)) {

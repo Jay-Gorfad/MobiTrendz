@@ -4,7 +4,6 @@ require 'vendor/autoload.php';
 use Razorpay\Api\Api;
 
 include_once("header.php");
-include_once("user_authentication.php");
 
 $q = "select * from user_details_tbl where User_Id='$_SESSION[user_id]'";
 $userData = mysqli_fetch_assoc(mysqli_query($con, $q));
@@ -49,7 +48,7 @@ try {
     <div class="container">
         <div class="row text-center">
             <div class="col-12 p-2 align-center">
-                <h1>Paying to PureBite</h1>
+                <h1>Paying to MobiTrendz</h1>
             </div>
         </div>
         <br>
