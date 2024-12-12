@@ -1,10 +1,5 @@
 <?php include('DB/connection.php');
-// if(isset($_SESSION["user_id"]) && $_SESSION['role']=="admin")
-// {
-//     echo "<script>
-//         window.location.href = 'Admin';
-//     </script>";
-// } 
+
 error_reporting(0);
 $backtrace = debug_backtrace();
 $caller_file = basename($backtrace[0]['file']);

@@ -33,27 +33,26 @@
             </form>
         </div>
     </main>
-<?php include("footer.php"); ?>
-<?php 
+    <?php include("footer.php"); ?>
+    <?php
 
-if (isset($_POST['add_offer'])) {
-    $offer_description = $_POST['offer_description'];
-    $discount = $_POST['discount'];
-    $minimum_order = $_POST['minimum_order'];
+    if (isset($_POST['add_offer'])) {
+        $offer_description = $_POST['offer_description'];
+        $discount = $_POST['discount'];
+        $minimum_order = $_POST['minimum_order'];
 
-    $insertOfferQuery = "INSERT INTO offer_details_tbl (offer_description, discount, minimum_order)
+        $insertOfferQuery = "INSERT INTO offer_details_tbl (Offer_Description, Discount, Minimum_Order)
         VALUES ('$offer_description', $discount, $minimum_order)";
 
-    if (mysqli_query($con, $insertOfferQuery)) {
-        echo '<script>
-                window.location.href = "offers.php"; // Redirect to offers page
+        if (mysqli_query($con, $insertOfferQuery)) {
+            echo '<script>
+                window.location.href = "offers.php"; 
               </script>';
-    } else {
-        echo '<script>
+        } else {
+            echo '<script>
                 alert("Error adding offer. Please try again.");
-                window.location.href = "add_offer.php"; // Redirect to add offer page
+                window.location.href = "add_offer.php";
               </script>';
+        }
     }
-}
-?>
-
+    ?>

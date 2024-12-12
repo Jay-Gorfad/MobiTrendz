@@ -1,9 +1,9 @@
-<?php include("sidebar.php"); 
+<?php include("sidebar.php");
 
 $product_id = $_GET['product_id'];
 
-$query = "select product.`Product_Id`, product.`Category_Id`, product.`Product_Name`, product.`Description`, product.`Product_Image`, product.`Sale_Price`, product.`Cost_Price`, product.`Discount`, product.`stock` , round(avg(review.Rating)) 'Rating', round(Sale_Price-Sale_Price*Discount/100,2) 'Price',COUNT(o.Order_Id) 'Sold_Quantity' from product_details_tbl as product left join review_details_tbl as review on product.Product_Id = review.Product_Id left join order_details_tbl as o on o.Product_Id = review.Product_Id group by Product_Id having Product_Id=$product_id";
-$result = mysqli_query($con,$query);
+$query = "SELECT product.Product_Id, product.Category_Id, product.Product_Name, product.Description, product.Product_Image, product.Sale_Price, product.Cost_Price, product.Discount, product.stock, ROUND(AVG(review.Rating), 0) AS Rating, ROUND(product.Sale_Price - (product.Sale_Price * product.Discount) / 100, 2) AS Price, COUNT(o.Order_Id) AS Sold_Quantity FROM product_details_tbl AS product LEFT JOIN review_details_tbl AS review ON product.Product_Id = review.Product_Id LEFT JOIN order_details_tbl AS o ON o.Product_Id = review.Product_Id WHERE product.Product_Id = '$product_id' GROUP BY product.Product_Id, product.Category_Id, product.Product_Name, product.Description, product.Product_Image, product.Sale_Price, product.Cost_Price, product.Discount, product.stock";
+$result = mysqli_query($con, $query);
 $product = mysqli_fetch_assoc($result);
 
 ?>
@@ -25,20 +25,20 @@ $product = mysqli_fetch_assoc($result);
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-4">
-                    <img src="..\img\items\products\<?php echo $product["Product_Image"]; ?>" alt="Product Photo" class="img-fluid">
+                        <img src="..\img\items\products\<?php echo $product["Product_Image"]; ?>" alt="Product Photo" class="img-fluid">
                     </div>
                     <div class="col-md-8">
                         <p><strong>Product ID:</strong> <?php echo $product["Product_Id"]; ?></p>
                         <p><strong>Product Name:</strong> <?php echo $product["Product_Name"]; ?></p>
-                        <p><strong>Average Rating:</strong>  <?php echo $product["Rating"]; ?></p>
-                        <p><strong>Description:</strong>  <?php echo $product["Description"]; ?></p>
-                        <p><strong>Stock Quantity:</strong>  <?php echo $product["stock"]; ?></p>
+                        <p><strong>Average Rating:</strong> <?php echo $product["Rating"]; ?></p>
+                        <p><strong>Description:</strong> <?php echo $product["Description"]; ?></p>
+                        <p><strong>Stock Quantity:</strong> <?php echo $product["stock"]; ?></p>
                         <p><strong>Cost Price:</strong> ₹ <?php echo $product["Cost_Price"]; ?></p>
                         <p><strong>Sale Price:</strong> ₹ <?php echo $product["Sale_Price"]; ?></p>
-                        <p><strong>Discount Percentage:</strong>  <?php echo $product["Discount"]; ?>%</p>
+                        <p><strong>Discount Percentage:</strong> <?php echo $product["Discount"]; ?>%</p>
                         <p><strong>Price After Discount:</strong> ₹<?php echo $product["Price"]; ?></p>
                         <p><strong>Category:</strong> Apple</p>
-                        <p><strong>Total Sales:</strong>  <?php echo $product["Sold_Quantity"]; ?></p>
+                        <p><strong>Total Sales:</strong> <?php echo $product["Sold_Quantity"]; ?></p>
                         <a class="btn btn-success" href="update-product.php?product_id=<?php echo $product["Product_Id"]; ?>">Update Product</a>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Product</button>
                     </div>
@@ -115,7 +115,7 @@ $product = mysqli_fetch_assoc($result);
                                     &#9733; &#9733; &#9733; &#9733; &#9734;
                                 </span>
                             </td>
-                            <td >
+                            <td>
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.
                             </td>
                             <td>
@@ -167,4 +167,4 @@ $product = mysqli_fetch_assoc($result);
             </div>
         </div>
     </div>
-<?php include("footer.php"); ?>
+    <?php include("footer.php"); ?>

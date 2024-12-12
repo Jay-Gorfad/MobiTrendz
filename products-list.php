@@ -1,15 +1,17 @@
 <div class="row justify-content-start align-items-stretch">
     <?php
-    $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name, product.Sale_Price, 
-    ROUND((product.Sale_Price - product.Sale_Price * product.Discount / 100), 2) AS 'Price', 
-    COALESCE(AVG(review.Rating), 0) AS 'Average_Rating', COUNT(review.Review_Id) AS 'Review_Count', 
-    category.Category_Id, product.stock
-    FROM product_details_tbl AS product
-    LEFT JOIN category_details_tbl AS category ON product.Category_Id = category.Category_Id
-    LEFT JOIN review_details_tbl AS review ON product.Product_Id = review.Product_Id
-    WHERE product.is_active = 1";
+    $query = "SELECT product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, 
+          category.Category_Name, product.Sale_Price, 
+          ROUND((product.Sale_Price - product.Sale_Price * product.Discount / 100), 2) AS 'Price', 
+          COALESCE(AVG(review.Rating), 0) AS 'Average_Rating', COUNT(review.Review_Id) AS 'Review_Count', 
+          category.Category_Id, product.stock
+          FROM product_details_tbl AS product
+          LEFT JOIN category_details_tbl AS category ON product.Category_Id = category.Category_Id
+          LEFT JOIN review_details_tbl AS review ON product.Product_Id = review.Product_Id
+          WHERE product.is_active = 1";
 
-    // Apply filters
+
+    // Initialize conditions array for filtering
     $conditions = [];
     $having_conditions = [];
 
@@ -28,7 +30,7 @@
     // Ratings filter
     if (!empty($_POST['ratings'])) {
         $ratings = (int)$_POST['ratings'];
-        $having_conditions[] = "COALESCE(AVG(review.Rating), 0) >= $ratings";
+        $having_conditions[] = "Average_Rating >= $ratings";
     }
 
     // Price filter
@@ -73,7 +75,7 @@
     // Brand filter
     if (!empty($_POST['brand'])) {
         $brand = mysqli_real_escape_string($con, $_POST['brand']);
-        $conditions[] = "product.Brand_Name = '$brand'";
+        $conditions[] = "category.Category_Name = '$brand'";
     }
 
     // Apply conditions to the query
@@ -81,28 +83,72 @@
         $query .= " AND " . implode(" AND ", $conditions);
     }
 
-    $query .= " GROUP BY product.Product_Id";
+    $query .= " GROUP BY product.Product_Id, product.Discount, product.Product_Image, product.Product_Name, category.Category_Name, product.Sale_Price, product.stock, category.Category_Id";
 
+    // Add HAVING clause for ratings filter
     if (!empty($having_conditions)) {
         $query .= " HAVING " . implode(" AND ", $having_conditions);
     }
 
+    // Shuffle the results by ordering them randomly
+    $query .= " ORDER BY RAND();";
+
+    // Now execute the query
     $result = mysqli_query($con, $query);
 
-    // Display products
-    if ($result && mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            ?>
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="product-item">
-                    <img src="<?php echo $row['Product_Image']; ?>" alt="<?php echo $row['Product_Name']; ?>" class="img-fluid">
-                    <h5><?php echo $row['Product_Name']; ?></h5>
-                    <p>Price: Rs. <?php echo $row['Price']; ?></p>
-                    <p>Discount: <?php echo $row['Discount']; ?>%</p>
-                    <p>Average Rating: <?php echo number_format($row['Average_Rating'], 1); ?> (<?php echo $row['Review_Count']; ?> reviews)</p>
+
+    $result = mysqli_query($con, $query);
+
+    if (mysqli_num_rows($result) > 0) {
+        while ($product = mysqli_fetch_assoc($result)) {
+            $isOutOfStock = $product['stock'] <= 0;
+    ?>
+
+            <div class="col-lg-3 col-md-4 gap p-2 col-sm-6 col-12">
+                <div class="card <?php echo $isOutOfStock ? 'disabled-card' : ''; ?>">
+
+                    <div class="product-image">
+                        <a href="product-details.php?product_id=<?php echo $product["Product_Id"] ?>">
+                            <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
+                        </a>
+                        <a href="wishlist.php?product_id=<?php echo $product["Product_Id"] ?>">
+                            <div class="like"><i class="fa-regular fa-heart"></i></div>
+                        </a>
+                    </div>
+
+                    <div class="card-body product-body px-3">
+                        <h6 class="card-title d-flex justify-content-center text-nowrap"><?php echo $product['Product_Name'] ?></h6>
+
+                        <div class="d-flex justify-content-center align-items-center flex-column mb-2 w-100">
+                            <span class="shop-price">₹<?php echo $product["Price"]; ?></span>
+                            <span class="striked-price">₹<?php echo $product["Sale_Price"]; ?></span>
+                        </div>
+
+                        <div class="rating-section mb-2 d-flex justify-content-center">
+                            <div class="ratings text-nowrap">
+                                <span class="fa fa-star <?php echo $product['Average_Rating'] >= 1 ? 'checked' : ''; ?>"></span>
+                                <span class="fa fa-star <?php echo $product['Average_Rating'] >= 2 ? 'checked' : ''; ?>"></span>
+                                <span class="fa fa-star <?php echo $product['Average_Rating'] >= 3 ? 'checked' : ''; ?>"></span>
+                                <span class="fa fa-star <?php echo $product['Average_Rating'] >= 4 ? 'checked' : ''; ?>"></span>
+                                <span class="fa fa-star <?php echo $product['Average_Rating'] >= 5 ? 'checked' : ''; ?>"></span>
+                            </div>
+                            <div class="review-count ps-1">(<?php echo $product['Review_Count']; ?>)</div>
+                        </div>
+
+                        <!-- Check for Out of Stock -->
+                        <?php if ($isOutOfStock): ?>
+                            <div class="d-flex align-items-center justify-content-around">
+                                <a class="btn btn-danger rounded-pill cart-btn order-link  flex-grow-1">Out of Stock</a>
+                            </div>
+                        <?php else: ?>
+                            <div class="d-flex align-items-center justify-content-around">
+                                <a class="order-link cart-btn flex-grow-1" href="cart.php?product_id=<?php echo $product["Product_Id"]; ?>">Add to cart</a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
-            <?php
+    <?php
         }
     } else {
         echo "<p>No products found matching your criteria.</p>";

@@ -20,6 +20,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Offer Description</th>
+                            <th>Offer Code</th>
                             <th>Discount</th>
                             <th>Minimum Order</th>
                             <th>Actions</th>
@@ -27,13 +28,14 @@
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT `Offer_Id`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=1";
+                            $query = "SELECT `Offer_Id`,`Offer_Code`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=1";
                             $result = mysqli_query($con,$query);
                             if(mysqli_num_rows($result)){
                                 while($offer = mysqli_fetch_assoc($result)){
                                 ?>
                                 <tr>
                                     <td><?php echo $offer["Offer_Description"]?></td>
+                                    <td><?php echo $offer["Offer_Code"]?></td>
                                     <td><?php echo $offer["Discount"]?>%</td>
                                     <td>₹<?php echo $offer["Minimum_Order"]?></td>
                                     <td>
@@ -124,13 +126,14 @@
                     <thead class="table-light">
                         <tr>
                             <th>Offer Description</th>
+                            <th>Offer Code</th>
                             <th>Discount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT `Offer_Id`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=2";
+                            $query = "SELECT `Offer_Id`,`Offer_Code`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=2";
                             $result = mysqli_query($con,$query);
                             $offer = mysqli_fetch_assoc($result);
                         ?>
@@ -140,6 +143,7 @@
                             <input type="hidden" name="offer_type" value="<?php echo $offer["offer_type"]; ?>">
     
                             <td><input type="text" class="form-control" name="offer_description" value="<?php echo $offer["Offer_Description"]; ?>"></td>
+                            <td><input type="text" class="form-control" name="offer_code" value="<?php echo $offer["Offer_Code"]; ?>"></td>
                             <td><input type="text" class="form-control" name="discount" value="<?php echo $offer["Discount"]; ?>"></td>
                             <td>
                                 <input type="submit" class="btn btn-success btn-sm" value="Update">
@@ -199,13 +203,14 @@
                     <thead class="table-light">
                         <tr>
                             <th>Offer Description</th>
+                            <th>Offer Code</th>
                             <th>Minimum Order</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $query = "SELECT `Offer_Id`, `Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=3";
+                            $query = "SELECT `Offer_Id`, `Offer_Code`,`Offer_Description`, `Discount`, `Minimum_Order`, `offer_type`,`active_status` FROM `offer_details_tbl` where offer_type=3";
                             $result = mysqli_query($con,$query);
                             $offer = mysqli_fetch_assoc($result);
                         ?>
@@ -215,6 +220,7 @@
                             <input type="hidden" name="offer_type" value="<?php echo $offer["offer_type"]; ?>">
     
                             <td><input type="text" class="form-control" name="offer_description" value="<?php echo $offer["Offer_Description"]; ?>"></td>
+                            <td><input type="text" class="form-control" name="offer_code" value="<?php echo $offer["Offer_Code"]; ?>"></td>
                             <td><input type="text" class="form-control" name="minimum_order" value="<?php echo $offer["Minimum_Order"]; ?>"></td>
                             <td>
                                 <input type="submit" class="btn btn-success btn-sm" value="Update"> 

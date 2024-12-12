@@ -1,5 +1,5 @@
-<form action="" method="post">
-    <div class="border p-3" id="filter-section">
+<div class="border p-3" id="filter-section">
+    <form action="" method="post">
         <div class="col-12 mb-3">
             <h6 class="mb-2"><span>Customer Ratings</span></h6>
             <div>
@@ -109,10 +109,9 @@
                     <label for="realme">Realme</label>
                 </div>
             </div>
-
         </div>
-        <div class="col-6 col-sm-4 col-md-3 mb-2 d-flex">
+        <div class="col-12 mb-2 d-flex justify-content-between">
             <input type="submit" value="Apply" name="filter-submit" class="primary-btn js-filter-btn">
         </div>
-    </div>
-</form>
+    </form>
+</div>
