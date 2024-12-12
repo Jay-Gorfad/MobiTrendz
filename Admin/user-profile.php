@@ -1,4 +1,8 @@
-<?php include("sidebar.php"); ?>
+<?php include("sidebar.php"); 
+
+$user_id = $_GET['user_id'];
+
+?>
 <div id="layoutSidenav_content">
     <div class="container-fluid px-4">
         <h1 class="mt-4">User Details</h1>
@@ -9,8 +13,7 @@
 
         <!-- Fetching User Information -->
         <?php
-            $user_id = $_GET['user_id']; // Assuming the user_id is passed as a query parameter
-            $query = "SELECT * FROM user_details_tbl WHERE User_Id = $user_id";
+            $query = "SELECT * FROM user_details_tbl where User_Id=$user_id";
             $result = mysqli_query($con, $query);
             $user = mysqli_fetch_assoc($result);
             $status = $user['Active_Status']; // Get the user's active status
@@ -46,15 +49,40 @@
 
         <!-- Fetching User Orders -->
         <?php
-            $order_query = "
-                SELECT 
-                    oh.Order_Id, oh.Order_Date, oh.Order_Status, oh.Total, oh.Shipping_Charge,
-                    od.Quantity, od.Price, od.Product_Id
-                FROM order_header_tbl oh
-                JOIN order_details_tbl od ON oh.Order_Id = od.Order_Id
-                WHERE oh.User_Id = $user_id
-            ";
-            $order_result = mysqli_query($con, $order_query);
+           $search = isset($_GET['search']) ? $_GET['search'] : '';
+           $search_query = '';
+           
+           if (!empty($search)) {
+               $search_query = "WHERE oh.Order_Id LIKE '%$search%' 
+                   OR oh.Order_Status LIKE '%$search%'";
+           }
+           
+           $query = "
+               SELECT 
+                   oh.Order_Id, 
+                   oh.Order_Date, 
+                   SUM(od.Quantity) AS Total_Quantity, 
+                   SUM(od.Quantity * od.Price) AS Total_Price, 
+                   oh.Order_Status,
+                   u.User_Id
+               FROM order_header_tbl oh
+               JOIN user_details_tbl u ON oh.User_Id = u.User_Id 
+               JOIN order_details_tbl od ON oh.Order_Id = od.Order_Id
+               $search_query
+               GROUP BY oh.Order_Id, oh.Order_Date, oh.Order_Status having u.User_Id = $user_id
+               ORDER BY oh.Order_Date DESC 
+           ";
+           $result = mysqli_query($con, $query);
+           $total_records = mysqli_num_rows($result);
+           
+           $records_per_page = 10;
+           $total_pages = ceil($total_records / $records_per_page);
+           
+           $page = isset($_GET['page']) ? $_GET['page'] : 1;
+           $start_from = ($page - 1) * $records_per_page;
+           
+           $query .= " LIMIT $start_from, $records_per_page";
+           $result = mysqli_query($con, $query);
         ?>
 
         <!-- User Orders Section -->
@@ -63,6 +91,15 @@
                 <h4>User Orders</h4>
             </div>
             <div class="card-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                        <div class="input-group">
+                            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>" />
+                            <button class="btn btn-primary" id="btnNavbarSearch" type="search"><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
                 <table class="table border text-nowrap">
                     <thead class="table-light">
                         <tr>
@@ -70,63 +107,75 @@
                             <th>Order Date</th>
                             <th>Quantity</th>
                             <th>Total Price</th>
-                            <th>Shipping Charge</th>
                             <th>Order Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            if (mysqli_num_rows($order_result) > 0) {
-                                while ($order = mysqli_fetch_assoc($order_result)) {
-                                    $order_id = $order['Order_Id'];
-                                    $order_date = $order['Order_Date'];
-                                    $quantity = $order['Quantity'];
-                                    $total_price = $order['Total'];
-                                    $shipping_charge = $order['Shipping_Charge'];
-                                    $order_status = $order['Order_Status'];
-                        ?>
-                        <tr>
-                            <td><?php echo $order_id; ?></td>
-                            <td><?php echo $order_date; ?></td>
-                            <td><?php echo $quantity; ?></td>
-                            <td><?php echo "$" . number_format($total_price, 2); ?></td>
-                            <td><?php echo "$" . number_format($shipping_charge, 2); ?></td>
-                            <td><?php echo $order_status; ?></td>
-                            <td>
-                                <a href="view-order.php?id=<?php echo $order_id; ?>" class="btn btn-info btn-sm">View</a>
-                                <button class="btn btn-primary btn-sm">Save</button>
-                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteOrderModal<?php echo $order_id; ?>">Delete</button>
-                            </td>
-                        </tr>
-
-                        <!-- Delete Order Modal -->
-                        <div class="modal fade" id="deleteOrderModal<?php echo $order_id; ?>" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteOrderModalLabel">Confirm Deletion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        if (mysqli_num_rows($result) > 0) 
+                        {
+                            while ($row = mysqli_fetch_assoc($result)) 
+                            {
+                                ?>
+                                <tr>
+                                <td><?php echo $row['Order_Id']; ?></td>
+                                <td><?php echo $row['Order_Date']; ?></td>
+                                <td><?php echo $row['Total_Quantity']; ?></td>
+                                <td>₹<?php echo number_format($row['Total_Price'], 2); ?></td>
+                                <td><?php echo $row['Order_Status']; ?></td>
+                                <td>
+                                    <div class='d-flex flex-nowrap'>
+                                        <a href='view-order.php?order_id=<?php echo $row["Order_Id"]; ?>' class='btn btn-info btn-sm me-1'>View</a>
+                                        <a href='update-order.php?order_id=<?php echo $row["Order_Id"]; ?>' class='btn btn-primary btn-sm me-1'>Edit</a>
+                                        <button class='btn btn-danger btn-sm' data-bs-toggle='modal' data-bs-target='#deleteModal<?php echo $row["Order_Id"]; ?>'>Delete</button>
                                     </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this order? This action cannot be undone.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <a href="delete-order.php?order_id=<?php echo $order_id; ?>" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            
+                            <div class="modal fade" id="deleteModal<?php echo $row["Order_Id"]; ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this order? This action cannot be undone.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <a href="delete-order.php?order_id=<?php echo $row["Order_Id"]; ?>" class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <?php
-                                }
-                            } else {
-                                echo "<tr><td colspan='7'>No orders found for this user.</td></tr>";
+                                <?php
                             }
+                        } else {
+                            echo "<tr><td colspan='7' class='text-center'>No orders found.</td></tr>";
+                        }
                         ?>
                     </tbody>
                 </table>
+                <div class="d-flex justify-content-end">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            
+                            <?php 
+                                if ($page > 1) {
+                                    echo "<li class='page-item'><a class='page-link' href='?page=".($page - 1)."&search=$search&user_id=$user_id'>Previous</a></li>";
+                                }
+                                for ($i = 1; $i <= $total_pages; $i++) {
+                                    echo "<li class='page-item " . ($i == $page ? 'active' : '') . "'><a class='page-link' href='?page=" . $i . "&search=$search&user_id=$user_id'>" . $i . "</a></li>";
+                                }
+                                if ($page < $total_pages) {
+                                    echo "<li class='page-item'><a class='page-link' href='?page=".($page + 1)."&search=$search&user_id=$user_id'>Next</a></li>";
+                                }
+                            ?>
+                        </ul>
+                    </nav>
+                </div> 
             </div>
         </div>
 

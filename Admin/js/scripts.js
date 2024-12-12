@@ -388,12 +388,26 @@ function validateAddOfferForm() {
         isValid = false;
     }
 
+    const offerCode = document.getElementById('offerCode').value.trim();
+    if (offerCode === '') {
+        offerCodeError.style.color = 'red';
+        offerCodeError.textContent = 'Offer Code is required.';
+        isValid = false;
+    }
+
     // Validate Discount
     const discountValue = document.getElementById('discount').value.trim();
     const discount = parseFloat(discountValue);
     if (discountValue === '' || isNaN(discount) || discount <= 0) {
         discountError.style.color = 'red';
         discountError.textContent = 'Please enter a valid discount amount.';
+        isValid = false;
+    }
+
+    const maxdiscount = document.getElementById('maxdiscount').value.trim();
+    if (maxdiscount === '') {
+        maxdiscountError.style.color = 'red';
+        maxdiscountError.textContent = 'Please enter a valid Max Discount is required.';
         isValid = false;
     }
 
@@ -406,59 +420,41 @@ function validateAddOfferForm() {
         isValid = false;
     }
 
+    
     return isValid;
 }
 
 
+// function validateAddOfferForm() {
+//     let isValid = true;
 
+//     document.getElementById('offerDescriptionError').innerText = '';
+//     document.getElementById('discountError').innerText = '';
+//     document.getElementById('minOrderError').innerText = '';
 
-function validateAddToCartForm() {
-    let isValid = true;
+//     const offerDescription = document.getElementById('offerDescription').value.trim();
+//     if (offerDescription === '') {
+//         document.getElementById('offerDescriptionError').innerText = 'Offer description is required.';
+//         isValid = false;
+//     }
 
-    // Clear previous error messages
-    const userError = document.getElementById('userError');
-    const productError = document.getElementById('productError');
-    const quantityError = document.getElementById('quantityError');
+//     const discount = document.getElementById('discount').value.trim();
+//     if (discount === '') {
+//         document.getElementById('discountError').innerText = 'Discount is required.';
+//         isValid = false;
+//     } else if (isNaN(discount) || discount <= 0) {
+//         document.getElementById('discountError').innerText = 'Please enter a valid discount amount.';
+//         isValid = false;
+//     }
 
-    if (!userError || !productError || !quantityError) {
-        console.error('Error elements not found.');
-        return false;
-    }
+//     const minOrder = document.getElementById('minOrder').value.trim();
+//     if (minOrder === '' || (isNaN(minOrder) || minOrder <= 0)) {
+//         document.getElementById('minOrderError').innerText = 'Please enter a valid minimum order amount.';
+//         isValid = false;
+//     }
 
-    userError.textContent = '';
-    productError.textContent = '';
-    quantityError.textContent = '';
-
-    // Validate User Selection
-    const user = document.getElementById('user').value;
-    if (user === '') {
-        userError.style.color = 'red';
-        userError.textContent = 'Please select a user.';
-        isValid = false;
-    }
-
-    // Validate Product Selection
-    const product = document.getElementById('product').value;
-    if (product === '') {
-        productError.style.color = 'red';
-        productError.textContent = 'Please select a product.';
-        isValid = false;
-    }
-
-    // Validate Quantity
-    const quantityValue = document.getElementById('quantity').value.trim();
-    const quantity = parseFloat(quantityValue);
-    if (quantityValue === '') {
-        quantityError.style.color = 'red';
-        quantityError.textContent = 'Quantity is required.';
-        isValid = false;
-    } else if (isNaN(quantity) || quantity <= 0) {
-        quantityError.textContent = 'Please enter a valid quantity.';
-        isValid = false;
-    }
-
-    return isValid;
-}
+//     return isValid;
+// }
 
 
 
@@ -499,10 +495,5 @@ function validateAddBannerForm() {
 
     return isValid;
 }
-
-
-
-
-
 
 
