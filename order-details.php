@@ -24,9 +24,9 @@ $order = mysqli_fetch_assoc($result);
                 Placed on: <?php echo $order["Order_Date"]; ?>
             </div>
         </div>
-        <div class="col-6 d-flex justify-content-end align-items-start">
+        <!-- <div class="col-6 d-flex justify-content-end align-items-start">
             <button class="primary-btn">Re-order</button>
-        </div>
+        </div> -->
     </div>
     <div class="row align-items-stretch mb-4 gap-md-0 m-1">
         <div class="col-md-4 col-sm-6 col-12 ps-md-0 mb-2">
