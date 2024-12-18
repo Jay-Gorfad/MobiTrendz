@@ -112,7 +112,7 @@
                             <img class="img-thumbnail p-4" src="img/items/products/<?php echo $product["Product_Image"]; ?>" alt="Card image cap">
                         </a>
                         <a href="wishlist.php?product_id=<?php echo $product["Product_Id"] ?>">
-                            <div class="like"><i class="fa fa-heartefr"></i></div>
+                            <div class="like"><i class="fa fa-heart"></i></div>
                         </a>
                     </div>
 
