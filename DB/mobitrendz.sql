@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 12, 2024 at 06:13 PM
+-- Generation Time: Jan 06, 2025 at 01:10 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -106,8 +106,7 @@ INSERT INTO `cart_details_tbl` (`Product_Id`, `Quantity`, `User_Id`) VALUES
 (6, 1, 9),
 (6, 1, 10),
 (8, 3, 11),
-(10, 1, 11),
-(14, 1, 4);
+(10, 1, 11);
 
 -- --------------------------------------------------------
 
@@ -176,11 +175,11 @@ CREATE TABLE `offer_details_tbl` (
 --
 
 INSERT INTO `offer_details_tbl` (`Offer_Id`, `Offer_Code`, `Offer_Description`, `Discount`, `Max_Discount`, `Minimum_Order`, `offer_type`, `active_status`, `Start_Date`, `End_Date`) VALUES
-(6, '10DISCOUNT', '10% Discount on orders above ₹145', 10, 100, 145.00, 1, 1, '2024-11-21 21:48:06', '2025-11-30 21:48:37'),
-(7, 'FIRSTORDER', 'First purchase discount', 5, 50, NULL, 2, 1, '2024-11-21 21:48:20', '2024-11-30 21:48:37'),
-(8, 'FREESHIPPING', 'Free shipping offer', NULL, 0, 300.00, 3, 1, '2024-11-21 21:48:25', '2024-11-30 21:48:37'),
-(9, '15DISCOUNT', '15% Discount on orders above ₹200', 15, 150, 200.00, 1, 1, '2024-11-14 21:48:28', '2024-11-30 21:48:37'),
-(10, '20DISCOUNT', '20% Discount on orders above ₹300', 20, 60, 300.00, 1, 1, '2024-11-21 21:48:32', '2024-11-30 21:48:37');
+(6, '10DISCOUNT', '10% Discount on orders above ₹145', 10, 100, 145.00, 1, 1, '2024-11-21 21:48:06', '2025-12-31 21:48:37'),
+(7, 'FIRSTORDER', 'First purchase discount', 5, 50, NULL, 2, 0, '2024-11-21 21:48:20', '2024-11-30 21:48:37'),
+(8, 'FREESHIPPING', 'Free shipping offer', NULL, 0, 300.00, 3, 0, '2024-11-21 21:48:25', '2024-11-30 21:48:37'),
+(9, '15DISCOUNT', '15% Discount on orders above ₹200', 15, 150, 200.00, 1, 0, '2024-11-14 00:00:00', '2024-12-16 00:00:00'),
+(10, '20DISCOUNT', '20% Discount on orders above ₹300', 20, 60, 300.00, 1, 1, '2024-11-21 21:48:32', '2024-12-31 21:48:37');
 
 -- --------------------------------------------------------
 
@@ -202,10 +201,10 @@ CREATE TABLE `order_details_tbl` (
 
 INSERT INTO `order_details_tbl` (`Order_Id`, `Product_Id`, `Quantity`, `Price`, `Discount`) VALUES
 (1, 8, 3, 26899.628252788, 100.37),
-(2, 10, 2, 25198.2, 0.00),
 (3, 11, 1, 13886.456524797, 52.72),
 (3, 10, 1, 12551.445235772, 47.65),
-(4, 10, 1, 12599.1, 0.00);
+(4, 10, 1, 12599.1, 0.00),
+(5, 10, 1, 12498.299942396, 100.80);
 
 -- --------------------------------------------------------
 
@@ -230,7 +229,7 @@ CREATE TABLE `order_header_tbl` (
 
 INSERT INTO `order_header_tbl` (`Order_Id`, `User_Id`, `Order_Date`, `Order_Status`, `Shipping_Address_Id`, `Shipping_Charge`, `Total`, `Payment_Mode`) VALUES
 (1, 4, '2024-12-11 06:37:30', 'Completed', 1, 50, 26950, 'Online'),
-(2, 4, '2024-12-11 06:43:10', 'Pending', 1, 50, 25248.2, 'COD');
+(5, 4, '2024-12-18 08:33:53', 'Pending', 2, 50, 12549.1, 'COD');
 
 -- --------------------------------------------------------
 
@@ -267,7 +266,7 @@ CREATE TABLE `product_details_tbl` (
 INSERT INTO `product_details_tbl` (`Product_Id`, `Category_Id`, `Product_Name`, `Description`, `Product_Image`, `Sale_Price`, `Cost_Price`, `Discount`, `stock`, `Display`, `Processor`, `RAM`, `Storage`, `Rear_Camera`, `Front_Camera`, `Battery`, `Operating_System`, `Color`, `is_active`) VALUES
 (6, 2, 'Samsung Galaxy S23 Ultra', 'Experience the power of Galaxy AI with S23 Ultra to effortlessly perfect your photos with Photo Assist, communicate quickly outside your language with Live Translate, 200MP. Wow-worthy resolution, Fast Charging Support, Stereo Speakers, Always On Display, Wireless Charging, Built-In GPS.', '673ddf45e9a86_samsungs23ultra.jpg', 121999.05, 123456.00, 12, 0, '‎AMOLED', 'Snapdragon 8Gen 2', '12GB', '256GB', '200MP + 12MP + 10MP', '12MP', '‎5000mah', 'Android', 'Cream', 1),
 (8, 1, 'Iphone 16', 'The iPhone 11 boasts a gorgeous all-screen Liquid Retina LCD that is water resistant up to 2 metres for up to 30 minutes.', '675b14661d1d3_15Plus.jpg', 65000.00, 70000.00, 8, 0, 'XDR Display', 'A13 Bionic', '8GB', '128GB', '48MP + 12MP', '20MP', '4500mah', 'IOS', 'Yellow', 1),
-(10, 3, 'Realme NARZO 70x', '7.69 mm Ultra-slim ,188g Light Body, The ultra-thin and lightweight body, combined with a width of 7.97cm, allows for comfortable single-handed grip even during extended periods of use; IP54 Dust and Water Resistance;', '670e68eeadc81realmenarzo70x.jpg', 13999.00, 16999.00, 10, 58, '120Hz Ultra Smooth Display', 'MediaTek Dimensity 6100+ processor', '8GB', '128GB', '48MP + 12MP + 8MP', '12MP', '‎5000mah', 'Android', 'Blue', 1),
+(10, 3, 'Realme NARZO 70x', '7.69 mm Ultra-slim ,188g Light Body, The ultra-thin and lightweight body, combined with a width of 7.97cm, allows for comfortable single-handed grip even during extended periods of use; IP54 Dust and Water Resistance;', '670e68eeadc81realmenarzo70x.jpg', 13999.00, 16999.00, 10, 57, '120Hz Ultra Smooth Display', 'MediaTek Dimensity 6100+ processor', '8GB', '128GB', '48MP + 12MP + 8MP', '12MP', '‎5000mah', 'Android', 'Blue', 1),
 (11, 6, 'OPPO A3X 5G', '16.94 cm (6.67\"Inch) HD+ LCD 120Hz Ultra Bright Display to greatly improve the smoothness of screen touches ,with Screen-to-body ratio of 89.9% for better viewing experience.', '670e6afb553d5oppoa3x.jpg', 16999.00, 17999.00, 18, 47, '120Hz Refresh Rate Display', ' MediaTek Dimensity 6300', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'Android', 'Black', 1),
 (12, 7, 'Vivo Y28s', '16.6624 cm (6.56\" inch) LCD Capacitive multi-touch display 90Hz refresh rate, 269 ppi & 840 nits, Side-mounted capacitive fingerprint sensor.', '670e6ce2dd31fvivoy28s.jpg', 14599.00, 17999.00, 13, 76, '6.56\" inch LCD Display', 'Dimensity 6300 5G processor', '8GB', '128GB', '48MP + 12MP', '12MP', '4500mah', 'Android', 'Red', 1),
 (13, 8, 'asasf', 'sdafafaas', '671869c0b4d28samsungs23ultra.jpg', 10.00, 10.00, 10, 10, 'XDR Display', 'asf', '12Gb', '128GB', '48MP + 12MP', '12MP', '4500mah', 'Android', 'Cream', 0),
@@ -366,6 +365,13 @@ CREATE TABLE `wishlist_details_tbl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+-- Dumping data for table `wishlist_details_tbl`
+--
+
+INSERT INTO `wishlist_details_tbl` (`Product_Id`, `User_Id`) VALUES
+(14, 4);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -455,7 +461,7 @@ ALTER TABLE `offer_details_tbl`
 -- AUTO_INCREMENT for table `order_header_tbl`
 --
 ALTER TABLE `order_header_tbl`
-  MODIFY `Order_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Order_Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product_details_tbl`
